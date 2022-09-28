@@ -197,7 +197,7 @@ cython_debug/
 #.idea/
 
 ### ROS ###
-*devel/
+devel/
 logs/
 bin/
 msg_gen/
