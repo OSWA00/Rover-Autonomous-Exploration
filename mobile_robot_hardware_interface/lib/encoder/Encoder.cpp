@@ -10,13 +10,6 @@ void init_encoder(Encoder &encoder, uint8_t channel_A_pin, uint8_t channel_B_pin
     pinMode(encoder.channel_B_pin, INPUT);
 }
 
-// void encoders::init_encoder(Encoder &encoder)
-// {
-//     pinMode(encoder.channel_A_pin, INPUT_PULLUP);
-//     pinMode(encoder.channel_B_pin, INPUT);
-//     encoder.pulses = 0x0;
-// }
-
 // float_t encoders::calculate_omega(Encoder &encoder, uint32_t delta_time)
 // {
 //     uint16_t total_pulses = 0x276;
