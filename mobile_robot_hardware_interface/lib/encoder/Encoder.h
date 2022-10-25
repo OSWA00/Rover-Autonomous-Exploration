@@ -13,4 +13,6 @@ struct Encoder
 
 void init_encoder(Encoder &encoder, uint8_t channel_A_pin, uint8_t channel_B_pin);
 
+float calculate_omega(Encoder &encoder, uint32_t time_delta);
+
 #endif
