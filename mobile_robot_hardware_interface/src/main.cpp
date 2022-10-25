@@ -1,30 +1,27 @@
 #include <Arduino.h>
-
-/*
- * rosserial Publisher Example
- * Prints "hello world!"
- */
+// #include "kinematics.h"
+#include "Encoder.h"
+// #include "encoders/helper_functions.h"
 
 #include <ros.h>
 #include <std_msgs/String.h>
 
-ros::NodeHandle nh;
-
-std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
-
-char hello[13] = "hello world!";
+Encoder ENCODER_LEFT;
+Encoder ENCODER_RIGHT;
 
 void setup()
 {
-  nh.initNode();
-  nh.advertise(chatter);
+  init_encoder(ENCODER_RIGHT, 0x0, 0x1);
+  init_encoder(ENCODER_LEFT, 0x2, 0x3);
+
+  // encoders::init_encoder(&ENCODER_RIGHT);
+  //   encoders::init_encoder(ENCODER_LEFT);
+  //   attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT.channel_A), encoder_1_ISR_handler, RISING);
+  //   encoders::init_encoder(ENCODER_RIGHT);
+  //   attachInterrupt(digitalPinToInterrupt(Encoder_1.channel_A), encoder_1_ISR_handler, RISING);
+  //
 }
 
 void loop()
 {
-  str_msg.data = hello;
-  chatter.publish(&str_msg);
-  nh.spinOnce();
-  delay(1000);
 }
