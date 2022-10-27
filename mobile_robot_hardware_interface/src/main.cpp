@@ -2,6 +2,7 @@
 #include "Encoder.h"
 #include "kinematics.h"
 #include "Motor.h"
+#include "vel_controller.h"
 
 // #include <ros.h>
 // #include <std_msgs/String.h>
@@ -10,6 +11,8 @@ Encoder ENCODER_LEFT;
 Encoder ENCODER_RIGHT;
 Motor MOTOR_RIGHT;
 Motor MOTOR_LEFT;
+Vel_controller CONTROLLER_MOTOR_RIGHT;
+Vel_controller CONTROLLER_MOTOR_LEFT;
 
 unsigned long int TIME_CURRENT;
 float TIME_DELTA;
@@ -29,6 +32,9 @@ void setup()
     init_motor(MOTOR_RIGHT, 0x19, 0x0);
     init_motor(MOTOR_LEFT, 0x5, 0x1);
 
+    init_controller(CONTROLLER_MOTOR_RIGHT, 50, 0.001);
+    init_controller(CONTROLLER_MOTOR_LEFT, 50, 0.001);
+
     attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT.channel_A_pin), encoder_right_isr_handler, RISING);
     attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT.channel_A_pin), encoder_left_isr_handler, RISING);
 }
@@ -45,15 +51,23 @@ void loop()
     float omega_right = calculate_omega(ENCODER_RIGHT, TIME_DELTA);
     float vel_right = convert_omega_to_vel(omega_right);
 
+    //! Remove on release
     Serial.print("Velocity left: ");
     Serial.println(vel_left);
 
     Serial.print("Velocity right: ");
     Serial.println(vel_right);
 
-    send_pwm(MOTOR_RIGHT, 0.3);
-    send_pwm(MOTOR_LEFT, 0.3);
-    delay(1000);
+    float u_right = calculate_u(CONTROLLER_MOTOR_RIGHT, vel_right, 0.5, TIME_DELTA);
+    // float u_left = calculate_u(CONTROLLER_MOTOR_LEFT, vel_left, 0.0, TIME_DELTA);
+
+    // Serial.print("U right ");
+    Serial.println(u_right);
+
+    send_pwm(MOTOR_RIGHT, -0.5);
+    send_pwm(MOTOR_LEFT, -0.5);
+
+    delay(100);
 }
 
 void encoder_right_isr_handler()
