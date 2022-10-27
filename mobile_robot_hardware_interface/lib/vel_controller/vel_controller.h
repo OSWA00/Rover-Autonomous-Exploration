@@ -8,7 +8,7 @@ struct Vel_controller
     float gain_proportional;
 };
 
-void init_controller(Vel_controller controller, float gain_proportional, float gain_integral);
+void init_controller(Vel_controller &controller, float gain_proportional, float gain_integral);
 
 float calculate_u(Vel_controller &controller, float current_vel, float desired_vel, float time_delta);
 

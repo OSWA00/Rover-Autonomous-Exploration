@@ -32,8 +32,8 @@ void setup()
     init_motor(MOTOR_RIGHT, 0x19, 0x0);
     init_motor(MOTOR_LEFT, 0x5, 0x1);
 
-    init_controller(CONTROLLER_MOTOR_RIGHT, 50, 0.001);
-    init_controller(CONTROLLER_MOTOR_LEFT, 50, 0.001);
+    init_controller(CONTROLLER_MOTOR_RIGHT, 10, 0.01);
+    init_controller(CONTROLLER_MOTOR_LEFT, 10, 0.01);
 
     attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT.channel_A_pin), encoder_right_isr_handler, RISING);
     attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT.channel_A_pin), encoder_left_isr_handler, RISING);
@@ -51,23 +51,13 @@ void loop()
     float omega_right = calculate_omega(ENCODER_RIGHT, TIME_DELTA);
     float vel_right = convert_omega_to_vel(omega_right);
 
-    //! Remove on release
-    Serial.print("Velocity left: ");
-    Serial.println(vel_left);
+    float u_right = calculate_u(CONTROLLER_MOTOR_RIGHT, vel_right, 0.3, TIME_DELTA);
+    float u_left = calculate_u(CONTROLLER_MOTOR_LEFT, vel_left, 0.05, TIME_DELTA);
 
-    Serial.print("Velocity right: ");
-    Serial.println(vel_right);
+    send_pwm(MOTOR_RIGHT, u_right);
+    send_pwm(MOTOR_LEFT, u_left);
 
-    float u_right = calculate_u(CONTROLLER_MOTOR_RIGHT, vel_right, 0.5, TIME_DELTA);
-    // float u_left = calculate_u(CONTROLLER_MOTOR_LEFT, vel_left, 0.0, TIME_DELTA);
-
-    // Serial.print("U right ");
-    Serial.println(u_right);
-
-    send_pwm(MOTOR_RIGHT, -0.5);
-    send_pwm(MOTOR_LEFT, -0.5);
-
-    delay(100);
+    delay(5);
 }
 
 void encoder_right_isr_handler()
