@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "Encoder.h"
+#include "kinematics.h"
 
 // #include <ros.h>
 // #include <std_msgs/String.h>
@@ -33,18 +34,18 @@ void loop()
     TIME_LAST = TIME_CURRENT;
 
     float omega_left = calculate_omega(ENCODER_LEFT, TIME_DELTA);
-    Serial.print("Pulses: ");
-    Serial.println(ENCODER_LEFT.pulses);
-    Serial.print("Omega left: ");
-    Serial.println(omega_left);
+    float vel_left = convert_omega_to_vel(omega_left);
 
     float omega_right = calculate_omega(ENCODER_RIGHT, TIME_DELTA);
-    Serial.print("Pulses: ");
-    Serial.println(ENCODER_RIGHT.pulses);
-    Serial.print("Omega right: ");
-    Serial.println(omega_right);
+    float vel_right = convert_omega_to_vel(omega_right);
 
-    delay(5000);
+    Serial.print("Velocity left: ");
+    Serial.println(vel_left);
+
+    Serial.print("Velocity right: ");
+    Serial.println(vel_right);
+
+    delay(1000);
 }
 
 void encoder_right_isr_handler()
