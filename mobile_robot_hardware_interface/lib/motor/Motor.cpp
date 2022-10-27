@@ -19,6 +19,6 @@ void init_motor(Motor &motor, int enable_pin, int enable_pwm_channel)
 
 void send_pwm(Motor &motor, float u)
 {
-    unsigned int duty_cycle = u * 255;
+    int duty_cycle = -u * 255;
     ledcWrite(motor.enable_pwm_channel, duty_cycle);
 }
