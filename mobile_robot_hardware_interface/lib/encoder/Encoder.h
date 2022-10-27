@@ -2,17 +2,14 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
-#include "stdint.h"
-
 struct Encoder
 {
-    uint8_t channel_A_pin;
-    uint8_t channel_B_pin;
-    uint32_t pulses;
+    unsigned int channel_A_pin;
+    unsigned int pulses;
 };
 
-void init_encoder(Encoder &encoder, uint8_t channel_A_pin, uint8_t channel_B_pin);
+void init_encoder(Encoder &encoder, unsigned int channel_A_pin);
 
-float calculate_omega(Encoder &encoder, uint32_t time_delta);
+float calculate_omega(Encoder &encoder, float time_delta);
 
 #endif
