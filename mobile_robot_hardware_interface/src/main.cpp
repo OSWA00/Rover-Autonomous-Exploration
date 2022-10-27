@@ -19,7 +19,7 @@ void setup()
     Serial.begin(115200);
     TIME_LAST = millis();
 
-    init_encoder(ENCODER_RIGHT, 0x0);
+    init_encoder(ENCODER_RIGHT, 0xC);
     init_encoder(ENCODER_LEFT, 0x2);
 
     attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT.channel_A_pin), encoder_right_isr_handler, RISING);
@@ -32,14 +32,19 @@ void loop()
     TIME_DELTA = (TIME_CURRENT - TIME_LAST) * 0.001;
     TIME_LAST = TIME_CURRENT;
 
-    float omega_right = calculate_omega(ENCODER_RIGHT, TIME_DELTA);
     float omega_left = calculate_omega(ENCODER_LEFT, TIME_DELTA);
-    Serial.print("Omega right: ");
-    Serial.println(omega_right);
+    Serial.print("Pulses: ");
+    Serial.println(ENCODER_LEFT.pulses);
     Serial.print("Omega left: ");
     Serial.println(omega_left);
 
-    delay(10);
+    float omega_right = calculate_omega(ENCODER_RIGHT, TIME_DELTA);
+    Serial.print("Pulses: ");
+    Serial.println(ENCODER_RIGHT.pulses);
+    Serial.print("Omega right: ");
+    Serial.println(omega_right);
+
+    delay(5000);
 }
 
 void encoder_right_isr_handler()
