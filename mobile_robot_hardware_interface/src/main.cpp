@@ -1,12 +1,15 @@
 #include <Arduino.h>
 #include "Encoder.h"
 #include "kinematics.h"
+#include "Motor.h"
 
 // #include <ros.h>
 // #include <std_msgs/String.h>
 
 Encoder ENCODER_LEFT;
 Encoder ENCODER_RIGHT;
+Motor MOTOR_RIGHT;
+Motor MOTOR_LEFT;
 
 unsigned long int TIME_CURRENT;
 float TIME_DELTA;
@@ -22,6 +25,9 @@ void setup()
 
     init_encoder(ENCODER_RIGHT, 0xC);
     init_encoder(ENCODER_LEFT, 0x2);
+
+    init_motor(MOTOR_RIGHT, 0x19, 0x0);
+    init_motor(MOTOR_LEFT, 0x5, 0x1);
 
     attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT.channel_A_pin), encoder_right_isr_handler, RISING);
     attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT.channel_A_pin), encoder_left_isr_handler, RISING);
@@ -45,6 +51,8 @@ void loop()
     Serial.print("Velocity right: ");
     Serial.println(vel_right);
 
+    send_pwm(MOTOR_RIGHT, 0.3);
+    send_pwm(MOTOR_LEFT, 0.3);
     delay(1000);
 }
 
