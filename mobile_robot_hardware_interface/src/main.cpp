@@ -4,8 +4,15 @@
 #include "Motor.h"
 #include "vel_controller.h"
 
-// #include <ros.h>
-// #include <std_msgs/String.h>
+#include <ros.h>
+#include <geometry_msgs/Twist.h>
+
+ros::NodeHandle nh;
+geometry_msgs::Twist twist_msg;
+ros::Publisher closed_vel("closed_vel", &twist_msg);
+
+float REF_RIGHT_VEL = 0.0;
+float REF_LEFT_VEL = 0.0;
 
 Encoder ENCODER_LEFT;
 Encoder ENCODER_RIGHT;
@@ -20,10 +27,18 @@ unsigned long int TIME_LAST;
 
 void encoder_right_isr_handler();
 void encoder_left_isr_handler();
+void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel);
+
+ros::Subscriber<geometry_msgs::Twist> cmd_vel("/cmd_vel", &cmd_vel_callback);
 
 void setup()
 {
     Serial.begin(115200);
+
+    nh.initNode();
+    nh.advertise(closed_vel);
+    nh.subscribe(cmd_vel);
+
     TIME_LAST = millis();
 
     init_encoder(ENCODER_RIGHT, 0xC);
@@ -51,12 +66,20 @@ void loop()
     float omega_right = calculate_omega(ENCODER_RIGHT, TIME_DELTA);
     float vel_right = convert_omega_to_vel(omega_right);
 
-    float u_right = calculate_u(CONTROLLER_MOTOR_RIGHT, vel_right, 0.3, TIME_DELTA);
-    float u_left = calculate_u(CONTROLLER_MOTOR_LEFT, vel_left, 0.05, TIME_DELTA);
+    float u_right = calculate_u(CONTROLLER_MOTOR_RIGHT, vel_right, REF_RIGHT_VEL, TIME_DELTA);
+    float u_left = calculate_u(CONTROLLER_MOTOR_LEFT, vel_left, REF_LEFT_VEL, TIME_DELTA);
+
+    float vel_frontal = calculate_frontal_velocity(vel_right, vel_left);
+    float vel_omega = calculate_frontal_omega(vel_right, vel_left);
+
+    twist_msg.linear.x = vel_frontal;
+    twist_msg.angular.z = vel_omega;
+    closed_vel.publish(&twist_msg);
 
     send_pwm(MOTOR_RIGHT, u_right);
     send_pwm(MOTOR_LEFT, u_left);
 
+    nh.spinOnce();
     delay(5);
 }
 
@@ -68,4 +91,12 @@ void encoder_right_isr_handler()
 void encoder_left_isr_handler()
 {
     ENCODER_LEFT.pulses++;
+}
+
+void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel)
+{
+    float v = cmd_vel.linear.x;
+    float omega = cmd_vel.angular.z;
+    REF_RIGHT_VEL = calculate_right_velocity(v, omega);
+    REF_LEFT_VEL = calculate_left_velocity(v, omega);
 }
