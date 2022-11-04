@@ -6,10 +6,14 @@
 
 #include <ros.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/Float32.h>
 
 ros::NodeHandle nh;
-geometry_msgs::Twist twist_msg;
-ros::Publisher closed_vel("closed_vel", &twist_msg);
+std_msgs::Float32 wl_msg;
+std_msgs::Float32 wr_msg;
+
+ros::Publisher wr("wr", &wr_msg);
+ros::Publisher wl("wl", &wl_msg);
 
 float REF_RIGHT_VEL = 0.0;
 float REF_LEFT_VEL = 0.0;
@@ -36,7 +40,8 @@ void setup()
     Serial.begin(115200);
 
     nh.initNode();
-    nh.advertise(closed_vel);
+    nh.advertise(wl);
+    nh.advertise(wr);
     nh.subscribe(cmd_vel);
 
     TIME_LAST = millis();
@@ -69,12 +74,11 @@ void loop()
     float u_right = calculate_u(CONTROLLER_MOTOR_RIGHT, vel_right, REF_RIGHT_VEL, TIME_DELTA);
     float u_left = calculate_u(CONTROLLER_MOTOR_LEFT, vel_left, REF_LEFT_VEL, TIME_DELTA);
 
-    float vel_frontal = calculate_frontal_velocity(vel_right, vel_left);
-    float vel_omega = calculate_frontal_omega(vel_right, vel_left);
+    wl_msg.data = vel_left;
+    wl.publish(&wl_msg);
 
-    twist_msg.linear.x = vel_frontal;
-    twist_msg.angular.z = vel_omega;
-    closed_vel.publish(&twist_msg);
+    wr_msg.data = vel_right;
+    wr.publish(&wr_msg);
 
     send_pwm(MOTOR_RIGHT, u_right);
     send_pwm(MOTOR_LEFT, u_left);
