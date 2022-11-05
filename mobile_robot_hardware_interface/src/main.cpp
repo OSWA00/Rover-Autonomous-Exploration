@@ -74,10 +74,10 @@ void loop()
     float u_right = calculate_u(CONTROLLER_MOTOR_RIGHT, vel_right, REF_RIGHT_VEL, TIME_DELTA);
     float u_left = calculate_u(CONTROLLER_MOTOR_LEFT, vel_left, REF_LEFT_VEL, TIME_DELTA);
 
-    wl_msg.data = vel_left;
+    wl_msg.data = omega_left;
     wl.publish(&wl_msg);
 
-    wr_msg.data = vel_right;
+    wr_msg.data = omega_right;
     wr.publish(&wr_msg);
 
     send_pwm(MOTOR_RIGHT, u_right);
