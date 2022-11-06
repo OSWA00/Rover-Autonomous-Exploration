@@ -267,3 +267,8 @@ CATKIN_IGNORE
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,python,ros,visualstudiocode
+.catkin_tools/*
+catkin_ws/.catkin_tools/profiles/default/packages/rover_odometry/package.xml
+catkin_ws/.catkin_tools/profiles/default/packages/rover_odometry/devel_manifest.txt
+catkin_ws/.catkin_tools/profiles/default/devel_collisions.txt
+catkin_ws/.catkin_tools/profiles/default/devel_collisions.txt
