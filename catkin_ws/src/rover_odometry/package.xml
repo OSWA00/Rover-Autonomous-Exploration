@@ -10,6 +10,7 @@
 
   <!-- buildtool_depend: dependencies of the build process -->
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslint</build_depend>
   <!-- build_depend: dependencies only used in source files -->
 
   <!-- depend: build, export, and execution dependency -->
