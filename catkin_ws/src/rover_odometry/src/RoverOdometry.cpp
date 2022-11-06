@@ -13,10 +13,16 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
     ROS_INFO("Successfully launched node.");
 }
 
+RoverOdometry::~RoverOdometry() {}
+
 bool RoverOdometry::readParameters() {
     if (!nodeHandle_.getParam("wl", wlTopic_)) return false;
     if (!nodeHandle_.getParam("wr", wrTopic_)) return false;
     return true;
 }
+
+void RoverOdometry::wlCallback(const std_msgs::Float32& message) {}
+
+void RoverOdometry::wrCallback(const std_msgs::Float32& message) {}
 
 }  // namespace rover_odometry
