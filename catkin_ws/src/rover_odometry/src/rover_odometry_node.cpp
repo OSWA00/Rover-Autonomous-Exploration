@@ -1,10 +1,13 @@
 #include <ros/ros.h>
 
-int main(int argc, char** argv)
-{
-  ros::init(argc, argv, "rover_odometry");
-  ros::NodeHandle nodeHandle("~");
+#include "rover_odometry/RoverOdometry.hpp"
 
-  ros::spin();
-  return 0;
+int main(int argc, char** argv) {
+    ros::init(argc, argv, "rover_odometry");
+    ros::NodeHandle nodeHandle("~");
+
+    rover_odometry::RoverOdometry roverOdometry(nodeHandle);
+
+    ros::spin();
+    return 0;
 }
