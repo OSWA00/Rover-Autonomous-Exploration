@@ -5,6 +5,8 @@
 #include <std_msgs/Float32.h>
 #include <tf/transform_broadcaster.h>
 
+#include "rover_odometry/Kinematics.hpp"
+
 namespace rover_odometry {
 class RoverOdometry {
    public:
@@ -20,10 +22,13 @@ class RoverOdometry {
 
     ros::Subscriber wl_;
     std::string wlTopic_;
-    
+
     ros::Subscriber wr_;
     std::string wrTopic_;
 
-    // TODO Publisher handler
+    ros::Publisher odom_;
+    std::string odomTopic_;
+
+    Kinematics kinematics_;
 };
 }  // namespace rover_odometry

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(rover_odometry)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ## By adding -Wall and -Werror, the compiler does not ignore warnings anymore,
@@ -51,16 +51,31 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+add_library(${PROJECT_NAME}_core
+   src/Kinematics.cpp
+)
+target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+
 add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}_node.cpp
   src/RoverOdometry.cpp
+)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
+
+add_dependencies(${PROJECT_NAME}_core
+  ${catkin_EXPORTED_TARGETS}
 )
 
 add_dependencies(${PROJECT_NAME}
   ${catkin_EXPORTED_TARGETS}
 )
 
+target_link_libraries(${PROJECT_NAME}_core
+  ${catkin_LIBRARIES}
+)
+
 target_link_libraries(${PROJECT_NAME}
+  ${PROJECT_NAME}_core
   ${catkin_LIBRARIES}
 )
 

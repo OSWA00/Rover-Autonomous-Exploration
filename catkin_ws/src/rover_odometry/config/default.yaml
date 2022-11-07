@@ -1,2 +1,3 @@
-wl_topic: /wl
-wr_topic: /wr
+wl_topic: rover/wl
+wr_topic: rover/wr
+odom_topic: rover/odom
