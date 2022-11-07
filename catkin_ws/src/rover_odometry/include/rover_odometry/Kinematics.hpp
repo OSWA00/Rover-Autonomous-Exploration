@@ -21,6 +21,7 @@ class Kinematics {
     void setRightWheelEstVel(float velocity);
 
     void setLeftWheelEstVel(float velocity);
+    
    private:
     struct RobotParameters;
 

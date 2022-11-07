@@ -31,13 +31,21 @@ float Kinematics::estimateWheelLinearVelocity(float w) {
 
 void Kinematics::estimateLinearVelocity() {
     robotOdometry_->linear_est_vel_ = (robotOdometry_->right_wheel_est_vel_ +
-                                      robotOdometry_->left_wheel_est_vel_) /
-                                     2;
+                                       robotOdometry_->left_wheel_est_vel_) /
+                                      2;
 }
 
 void Kinematics::estimateAngularVelocity() {
     robotOdometry_->angular_est_vel_ = (robotOdometry_->right_wheel_est_vel_ -
-                                       robotOdometry_->left_wheel_est_vel_) /
-                                      robotParamaters_->wheelSeparation_;
+                                        robotOdometry_->left_wheel_est_vel_) /
+                                       robotParamaters_->wheelSeparation_;
+}
+
+void Kinematics::setLeftWheelEstVel(float velocity) {
+    robotOdometry_->left_wheel_est_vel_ = velocity;
+}
+
+void Kinematics::setRightWheelEstVel(float velocity) {
+    robotOdometry_->right_wheel_est_vel_ = velocity;
 }
 }  // namespace rover_odometry
