@@ -4,7 +4,6 @@
         <rosparam command="load" file="$(find rover_odometry)/config/rover/topics.yaml" />
         <rosparam command="load" file="$(find rover_odometry)/config/rover/rover_parameters.yaml" />
 
-        "$(find turtlebot3_navigation)
     </node>
 
     <!-- Launch roserial node -->
