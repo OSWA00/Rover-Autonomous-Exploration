@@ -29,6 +29,9 @@ class RoverOdometry {
     ros::Publisher odom_;
     std::string odomTopic_;
 
+    float wheelRadius_;
+    float wheelSeparation_;
+
     Kinematics kinematics_;
 };
 }  // namespace rover_odometry

@@ -9,8 +9,8 @@ struct Kinematics::RobotParameters {
 struct Kinematics::RobotOdometry {
     float right_wheel_est_vel_;
     float left_wheel_est_vel_;
-    float linear_est_vel;
-    float angular_est_vel;
+    float linear_est_vel_;
+    float angular_est_vel_;
 };
 
 Kinematics::Kinematics() {
@@ -30,13 +30,13 @@ float Kinematics::estimateWheelLinearVelocity(float w) {
 }
 
 void Kinematics::estimateLinearVelocity() {
-    robotOdometry_->linear_est_vel = (robotOdometry_->right_wheel_est_vel_ +
+    robotOdometry_->linear_est_vel_ = (robotOdometry_->right_wheel_est_vel_ +
                                       robotOdometry_->left_wheel_est_vel_) /
                                      2;
 }
 
 void Kinematics::estimateAngularVelocity() {
-    robotOdometry_->angular_est_vel = (robotOdometry_->right_wheel_est_vel_ -
+    robotOdometry_->angular_est_vel_ = (robotOdometry_->right_wheel_est_vel_ -
                                        robotOdometry_->left_wheel_est_vel_) /
                                       robotParamaters_->wheelSeparation_;
 }
