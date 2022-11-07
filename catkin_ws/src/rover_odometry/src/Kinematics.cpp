@@ -16,6 +16,12 @@ struct Kinematics::RobotOdometry {
 Kinematics::Kinematics() {
     robotParamaters_ = std::unique_ptr<RobotParameters>();
     robotOdometry_ = std::unique_ptr<RobotOdometry>();
+
+    robotOdometry_->right_wheel_est_vel_ = 0.0;
+    robotOdometry_->left_wheel_est_vel_ = 0.0;
+
+    robotOdometry_->linear_est_vel_ = 0.0;
+    robotOdometry_->angular_est_vel_ = 0.0;
 }
 
 Kinematics::~Kinematics() = default;
