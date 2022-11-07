@@ -10,7 +10,7 @@ class Kinematics {
 
     virtual ~Kinematics();
 
-    void addRobotParameters(float length, float wheelRadius);
+    void addRobotParameters(float wheelSeparation, float wheelRadius);
 
     float estimateWheelLinearVelocity(float w);
 

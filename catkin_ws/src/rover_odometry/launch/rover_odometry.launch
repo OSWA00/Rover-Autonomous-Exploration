@@ -1,7 +1,8 @@
 <launch>
     <!-- Launch rover odometry node -->
     <node pkg="rover_odometry" type="rover_odometry" name="rover_odometry" output="screen">
-        <rosparam command="load" file="$(dirname)/../config/default.yaml" />
+        <rosparam command="load" file="$(dirname)/../config/rover/topics.yaml" />
+        <rosparam command="load" file="$(dirname)/../config/rover/rover_parameters.yaml" />
     </node>
 
     <!-- Launch roserial node -->
