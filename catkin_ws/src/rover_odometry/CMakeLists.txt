@@ -13,7 +13,9 @@ find_package(catkin REQUIRED
 COMPONENTS
   roscpp
   nav_msgs
-  tf
+  tf2_ros
+  tf2
+  geometry_msgs
   std_msgs
   roslint
 )

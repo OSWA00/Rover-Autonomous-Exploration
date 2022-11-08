@@ -11,7 +11,14 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
     wr_ = nodeHandle_.subscribe(wrTopic_, 1, &RoverOdometry::wrCallback, this);
     odom_ = nodeHandle_.advertise<nav_msgs::Odometry>(odomTopic_, 50);
 
-    // kinematics_.addRobotParameters(wheelRadius_, wheelSeparation_);
+    kinematics_.addRobotParameters(wheelRadius_, wheelSeparation_);
+
+    timeCurrent_ = ros::Time::now();
+    odomTransform_.header.stamp = timeCurrent_;
+
+    odomTransform_.header.frame_id = "odom";
+    odomTransform_.child_frame_id = "base_link";
+    
     ROS_INFO("Successfully launched node.");
 }
 
