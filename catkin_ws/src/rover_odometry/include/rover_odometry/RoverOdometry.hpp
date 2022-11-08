@@ -1,9 +1,11 @@
 #pragma once
 
+#include <geometry_msgs/TransformStamped.h>
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
-#include <tf/transform_broadcaster.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
 
 #include "rover_odometry/Kinematics.hpp"
 
@@ -20,6 +22,9 @@ class RoverOdometry {
 
     ros::NodeHandle& nodeHandle_;
 
+    ros::Time timeCurrent_;
+    ros::Time timeLast_;
+
     ros::Subscriber wl_;
     std::string wlTopic_;
 
@@ -28,6 +33,8 @@ class RoverOdometry {
 
     ros::Publisher odom_;
     std::string odomTopic_;
+
+    geometry_msgs::TransformStamped odomTransform_;
 
     float wheelRadius_;
     float wheelSeparation_;
