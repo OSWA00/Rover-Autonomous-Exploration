@@ -30,29 +30,29 @@ void Kinematics::addRobotParameters(float &wheelSeparation, float &wheelRadius) 
     robotParamaters_->wheelSeparation_ = wheelSeparation;
 }
 
-// float Kinematics::estimateWheelLinearVelocity(float w) {
-//     float linear_velocity = w * robotParamaters_->wheelRadius_;
-//     return linear_velocity;
-// }
+float Kinematics::estimateWheelLinearVelocity(float w) {
+    float linear_velocity = w * robotParamaters_->wheelRadius_;
+    return linear_velocity;
+}
 
-// void Kinematics::estimateLinearVelocity() {
-//     robotOdometry_->linear_est_vel_ = float((robotOdometry_->right_wheel_est_vel_ +
-//                                              robotOdometry_->left_wheel_est_vel_) /
-//                                             2);
-// }
+void Kinematics::estimateLinearVelocity() {
+    robotOdometry_->linear_est_vel_ = float((robotOdometry_->right_wheel_est_vel_ +
+                                             robotOdometry_->left_wheel_est_vel_) /
+                                            2);
+}
 
-// void Kinematics::estimateAngularVelocity() {
-//     robotOdometry_->angular_est_vel_ = float((robotOdometry_->right_wheel_est_vel_ -
-//                                               robotOdometry_->left_wheel_est_vel_) /
-//                                              robotParamaters_->wheelSeparation_);
-// }
+void Kinematics::estimateAngularVelocity() {
+    robotOdometry_->angular_est_vel_ = float((robotOdometry_->right_wheel_est_vel_ -
+                                              robotOdometry_->left_wheel_est_vel_) /
+                                             robotParamaters_->wheelSeparation_);
+}
 
-// void Kinematics::setLeftWheelEstVel(float velocity) {
-//     robotOdometry_->left_wheel_est_vel_ = velocity;
-// }
+void Kinematics::setLeftWheelEstVel(float velocity) {
+    robotOdometry_->left_wheel_est_vel_ = velocity;
+}
 
-// void Kinematics::setRightWheelEstVel(float velocity) {
-//     robotOdometry_->right_wheel_est_vel_ = velocity;
-// }
+void Kinematics::setRightWheelEstVel(float velocity) {
+    robotOdometry_->right_wheel_est_vel_ = velocity;
+}
 
 }  // namespace rover_odometry
