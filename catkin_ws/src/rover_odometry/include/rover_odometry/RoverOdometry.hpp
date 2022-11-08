@@ -14,6 +14,7 @@ class RoverOdometry {
    public:
     RoverOdometry(ros::NodeHandle& nodeHandle);
     virtual ~RoverOdometry();
+    void publishOdom();
 
    private:
     bool readParameters();
@@ -33,7 +34,10 @@ class RoverOdometry {
 
     ros::Publisher odom_;
     std::string odomTopic_;
+    std::string frameId_;
+    std::string childFrameId_;
 
+    tf2_ros::TransformBroadcaster odomBroadcaster_;
     geometry_msgs::TransformStamped odomTransform_;
 
     float wheelRadius_;

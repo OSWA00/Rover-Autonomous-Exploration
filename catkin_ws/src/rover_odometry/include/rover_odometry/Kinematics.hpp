@@ -10,17 +10,17 @@ class Kinematics {
 
     virtual ~Kinematics();
 
-    void addRobotParameters(float wheelSeparation, float wheelRadius);
+    void addRobotParameters(float &wheelSeparation, float &wheelRadius);
 
-    float estimateWheelLinearVelocity(float w);
+    // float estimateWheelLinearVelocity(float w);
 
-    void estimateLinearVelocity();
+    // void estimateLinearVelocity();
 
-    void estimateAngularVelocity();
+    // void estimateAngularVelocity();
 
-    void setRightWheelEstVel(float velocity);
+    // void setRightWheelEstVel(float velocity);
 
-    void setLeftWheelEstVel(float velocity);
+    // void setLeftWheelEstVel(float velocity);
 
    private:
     struct RobotParameters;

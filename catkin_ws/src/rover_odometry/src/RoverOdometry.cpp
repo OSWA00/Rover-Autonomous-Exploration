@@ -13,12 +13,6 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
 
     kinematics_.addRobotParameters(wheelRadius_, wheelSeparation_);
 
-    timeCurrent_ = ros::Time::now();
-    odomTransform_.header.stamp = timeCurrent_;
-
-    odomTransform_.header.frame_id = "odom";
-    odomTransform_.child_frame_id = "base_link";
-    
     ROS_INFO("Successfully launched node.");
 }
 
@@ -30,20 +24,28 @@ bool RoverOdometry::readParameters() {
     if (!nodeHandle_.getParam("wheel_radius", wheelRadius_)) return false;
     if (!nodeHandle_.getParam("wheel_separation", wheelSeparation_))
         return false;
+    if (!nodeHandle_.getParam("odom_frame", frameId_)) return false;
+    if (!nodeHandle_.getParam("base_frame", childFrameId_)) return false;
 
     return true;
 }
 
 void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
-    float angular_velocity = message.data;
-    float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
-    kinematics_.setLeftWheelEstVel(velocity);
+    // float angular_velocity = message.data;
+    // float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
+    // kinematics_.setLeftWheelEstVel(velocity);
 }
 
 void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
-    float angular_velocity = message.data;
-    float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
-    kinematics_.setRightWheelEstVel(velocity);
+    // float angular_velocity = message.data;
+    // float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
+    // kinematics_.setRightWheelEstVel(velocity);
+}
+
+void RoverOdometry::publishOdom() {
+    odomTransform_.header.stamp = ros::Time::now();
+    odomTransform_.header.frame_id = frameId_;
+    odomTransform_.child_frame_id = childFrameId_;
 }
 
 }  // namespace rover_odometry
