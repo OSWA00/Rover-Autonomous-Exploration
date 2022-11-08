@@ -11,7 +11,7 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
     wr_ = nodeHandle_.subscribe(wrTopic_, 1, &RoverOdometry::wrCallback, this);
     odom_ = nodeHandle_.advertise<nav_msgs::Odometry>(odomTopic_, 50);
 
-    kinematics_.addRobotParameters(wheelRadius_, wheelSeparation_);
+    // kinematics_.addRobotParameters(wheelRadius_, wheelSeparation_);
     ROS_INFO("Successfully launched node.");
 }
 

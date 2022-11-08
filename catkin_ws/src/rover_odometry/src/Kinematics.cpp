@@ -16,12 +16,6 @@ struct Kinematics::RobotOdometry {
 Kinematics::Kinematics() {
     robotParamaters_ = std::unique_ptr<RobotParameters>();
     robotOdometry_ = std::unique_ptr<RobotOdometry>();
-
-    robotOdometry_->right_wheel_est_vel_ = 0.0;
-    robotOdometry_->left_wheel_est_vel_ = 0.0;
-
-    robotOdometry_->linear_est_vel_ = 0.0;
-    robotOdometry_->angular_est_vel_ = 0.0;
 }
 
 Kinematics::~Kinematics() = default;
@@ -32,7 +26,8 @@ void Kinematics::addRobotParameters(float wheelSeparation, float wheelRadius) {
 }
 
 float Kinematics::estimateWheelLinearVelocity(float w) {
-    return w * robotParamaters_->wheelRadius_;
+    float linear_velocity = w * robotParamaters_->wheelRadius_;
+     return linear_velocity;
 }
 
 void Kinematics::estimateLinearVelocity() {
