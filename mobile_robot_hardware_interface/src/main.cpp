@@ -12,8 +12,8 @@ ros::NodeHandle nh;
 std_msgs::Float32 wl_msg;
 std_msgs::Float32 wr_msg;
 
-ros::Publisher wr("wr", &wr_msg);
-ros::Publisher wl("wl", &wl_msg);
+ros::Publisher wr("rover/wr", &wr_msg);
+ros::Publisher wl("rover/wl", &wl_msg);
 
 float REF_RIGHT_VEL = 0.0;
 float REF_LEFT_VEL = 0.0;
@@ -33,7 +33,7 @@ void encoder_right_isr_handler();
 void encoder_left_isr_handler();
 void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel);
 
-ros::Subscriber<geometry_msgs::Twist> cmd_vel("/cmd_vel", &cmd_vel_callback);
+ros::Subscriber<geometry_msgs::Twist> cmd_vel("rover/cmd_vel", &cmd_vel_callback);
 
 void setup()
 {
