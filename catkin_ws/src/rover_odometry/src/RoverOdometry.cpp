@@ -49,10 +49,30 @@ void RoverOdometry::publishOdom() {
     float timeDelta = (timeCurrent_ - timeLast_).toSec();
     kinematics_.estimatePosition(timeDelta);
 
+    // float velocityX = kinematics_.get_velocity_est_x();
+    // float velocityY = kinematics_.get_velocity_est_y();
+    // float velocityTheta = kinematics_.get_velocity_est_theta();
+    float poseX = kinematics_.get_x_est_pose();
+    float poseY = kinematics_.get_y_est_pose();
+    float poseTheta = kinematics_.get_theta_est_pose();
+
+    tf2::Quaternion odomQuaternion;
+    odomQuaternion.setRPY(0, 0, poseTheta);
+
+    geometry_msgs::Quaternion odomMessage;
+    tf2::convert(odomQuaternion, odomMessage);
+
     odomTransform_.header.stamp = ros::Time::now();
     odomTransform_.header.frame_id = frameId_;
     odomTransform_.child_frame_id = childFrameId_;
-}
 
+    odomTransform_.transform.translation.x = poseX;
+    odomTransform_.transform.translation.y = poseY;
+    odomTransform_.transform.translation.z = 0.0;
+
+    odomTransform_.transform.rotation = odomMessage;
+
+    odomBroadcaster_.sendTransform(odomTransform_);
+}
 
 }  // namespace rover_odometry
