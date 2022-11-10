@@ -48,10 +48,12 @@ void RoverOdometry::publishOdom() {
     timeCurrent_ = ros::Time::now();
     float timeDelta = (timeCurrent_ - timeLast_).toSec();
     kinematics_.estimatePosition(timeDelta);
+    timeLast_ = timeCurrent_;
 
-    // float velocityX = kinematics_.get_velocity_est_x();
-    // float velocityY = kinematics_.get_velocity_est_y();
-    // float velocityTheta = kinematics_.get_velocity_est_theta();
+    float velocityX = kinematics_.get_velocity_est_x();
+    float velocityY = kinematics_.get_velocity_est_y();
+    float velocityTheta = kinematics_.get_velocity_est_theta();
+
     float poseX = kinematics_.get_x_est_pose();
     float poseY = kinematics_.get_y_est_pose();
     float poseTheta = kinematics_.get_theta_est_pose();
@@ -73,6 +75,22 @@ void RoverOdometry::publishOdom() {
     odomTransform_.transform.rotation = odomMessage;
 
     odomBroadcaster_.sendTransform(odomTransform_);
+
+    nav_msgs::Odometry odom;
+    odom.header.stamp = timeCurrent_;
+    odom.header.frame_id = frameId_;
+
+    odom.pose.pose.position.x = poseX;
+    odom.pose.pose.position.y = poseY;
+    odom.pose.pose.position.z = 0.0;
+
+    odom.child_frame_id = childFrameId_;
+
+    odom.twist.twist.linear.x = velocityX;
+    odom.twist.twist.linear.y = velocityY;
+    odom.twist.twist.angular.z = velocityTheta;
+
+    odom_.publish(odom);
 }
 
 }  // namespace rover_odometry
