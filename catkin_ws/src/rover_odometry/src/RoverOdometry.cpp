@@ -31,21 +31,26 @@ bool RoverOdometry::readParameters() {
 }
 
 void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
-    // float angular_velocity = message.data;
-    // float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
-    // kinematics_.setLeftWheelEstVel(velocity);
+    float angular_velocity = message.data;
+    float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
+    kinematics_.setLeftWheelEstVel(velocity);
 }
 
 void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
-    // float angular_velocity = message.data;
-    // float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
-    // kinematics_.setRightWheelEstVel(velocity);
+    float angular_velocity = message.data;
+    float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
+    kinematics_.setRightWheelEstVel(velocity);
 }
 
 void RoverOdometry::publishOdom() {
+
+    float timeDelta = (timeCurrent_ - timeLast_).toSec();
+    kinematics_.estimatePosition(timeDelta);
+
     odomTransform_.header.stamp = ros::Time::now();
     odomTransform_.header.frame_id = frameId_;
     odomTransform_.child_frame_id = childFrameId_;
 }
+
 
 }  // namespace rover_odometry

@@ -6,8 +6,13 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "rover_odometry");
     ros::NodeHandle nodeHandle("~");
 
-    rover_odometry::RoverOdometry roverOdometry(nodeHandle);
 
-    ros::spin();
+    rover_odometry::RoverOdometry roverOdometry(nodeHandle);
+    ros::Rate rate(50);
+
+    while (ros::ok()) {
+        ros::spinOnce();
+        rate.sleep();
+    }
     return 0;
 }

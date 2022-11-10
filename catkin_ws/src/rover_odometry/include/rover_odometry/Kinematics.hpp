@@ -18,6 +18,8 @@ class Kinematics {
 
     void estimateAngularVelocity();
 
+    void estimatePosition(float delta_time);
+
     void setRightWheelEstVel(float velocity);
 
     void setLeftWheelEstVel(float velocity);

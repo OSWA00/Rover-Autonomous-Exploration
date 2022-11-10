@@ -1,6 +1,6 @@
 #include "rover_odometry/Kinematics.hpp"
 
-#include <cstdio>
+#include <math.h>
 
 namespace rover_odometry {
 struct Kinematics::RobotParameters {
@@ -55,4 +55,16 @@ void Kinematics::setRightWheelEstVel(float velocity) {
     robotOdometry_->right_wheel_est_vel_ = velocity;
 }
 
+void Kinematics::estimatePosition(float delta_time) {
+    estimateAngularVelocity();
+    estimateLinearVelocity();
+
+    robotOdometry_->theta_est_pose_ += robotOdometry_->angular_est_vel_;
+
+    float velocity_est_x = robotOdometry_->linear_est_vel_ * cos(robotOdometry_->theta_est_pose_);
+    float velocity_est_y = robotOdometry_->linear_est_vel_ * sin(robotOdometry_->theta_est_pose_);
+
+    robotOdometry_->x_est_pose_ += velocity_est_x * delta_time;
+    robotOdometry_->y_est_pose_ += velocity_est_y * delta_time;
+}
 }  // namespace rover_odometry
