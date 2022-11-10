@@ -23,6 +23,7 @@ RoverOdometry::~RoverOdometry() {}
 bool RoverOdometry::readParameters() {
     if (!nodeHandle_.getParam("wl_topic", wlTopic_)) return false;
     if (!nodeHandle_.getParam("wr_topic", wrTopic_)) return false;
+    if (!nodeHandle_.getParam("odom_topic", odomTopic_)) return false;
     if (!nodeHandle_.getParam("wheel_radius", wheelRadius_)) return false;
     if (!nodeHandle_.getParam("wheel_separation", wheelSeparation_))
         return false;
