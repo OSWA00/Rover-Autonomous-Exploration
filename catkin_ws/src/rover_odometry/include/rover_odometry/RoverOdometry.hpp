@@ -5,6 +5,8 @@
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
 #include <tf2/LinearMath/Quaternion.h>
+#include <tf2/convert.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_broadcaster.h>
 
 #include "rover_odometry/Kinematics.hpp"
@@ -14,6 +16,7 @@ class RoverOdometry {
    public:
     RoverOdometry(ros::NodeHandle& nodeHandle);
     virtual ~RoverOdometry();
+    void publishOdom();
 
    private:
     bool readParameters();
@@ -33,7 +36,10 @@ class RoverOdometry {
 
     ros::Publisher odom_;
     std::string odomTopic_;
+    std::string frameId_;
+    std::string childFrameId_;
 
+    tf2_ros::TransformBroadcaster odomBroadcaster_;
     geometry_msgs::TransformStamped odomTransform_;
 
     float wheelRadius_;
