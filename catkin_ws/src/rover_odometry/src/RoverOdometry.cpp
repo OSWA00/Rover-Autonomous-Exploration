@@ -13,6 +13,8 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
 
     kinematics_.addRobotParameters(wheelRadius_, wheelSeparation_);
 
+    timeLast_ = ros::Time::now();
+
     ROS_INFO("Successfully launched node.");
 }
 
@@ -43,7 +45,7 @@ void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
 }
 
 void RoverOdometry::publishOdom() {
-
+    timeCurrent_ = ros::Time::now();
     float timeDelta = (timeCurrent_ - timeLast_).toSec();
     kinematics_.estimatePosition(timeDelta);
 

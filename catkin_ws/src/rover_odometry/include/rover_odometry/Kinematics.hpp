@@ -18,11 +18,23 @@ class Kinematics {
 
     void estimateAngularVelocity();
 
-    void estimatePosition(float delta_time);
+    void estimatePosition(float deltaTime);
 
     void setRightWheelEstVel(float velocity);
 
     void setLeftWheelEstVel(float velocity);
+
+    float get_x_est_pose();
+
+    float get_y_est_pose();
+
+    float get_theta_est_pose();
+
+    float get_velocity_est_x();
+
+    float get_velocity_est_y();
+
+    float get_velocity_est_theta();
 
    private:
     struct RobotParameters;

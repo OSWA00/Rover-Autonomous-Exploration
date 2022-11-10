@@ -11,6 +11,7 @@ int main(int argc, char** argv) {
     ros::Rate rate(50);
 
     while (ros::ok()) {
+        roverOdometry.publishOdom();
         ros::spinOnce();
         rate.sleep();
     }

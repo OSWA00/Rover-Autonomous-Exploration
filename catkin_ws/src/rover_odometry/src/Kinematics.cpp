@@ -16,6 +16,8 @@ struct Kinematics::RobotOdometry {
     float x_est_pose_ = 0.0;
     float y_est_pose_ = 0.0;
     float theta_est_pose_ = 0.0;
+    float velocity_est_x = 0.0;
+    float velocity_est_y = 0.0;
 };
 
 Kinematics::Kinematics() {
@@ -55,16 +57,41 @@ void Kinematics::setRightWheelEstVel(float velocity) {
     robotOdometry_->right_wheel_est_vel_ = velocity;
 }
 
-void Kinematics::estimatePosition(float delta_time) {
+void Kinematics::estimatePosition(float deltaTime) {
     estimateAngularVelocity();
     estimateLinearVelocity();
 
-    robotOdometry_->theta_est_pose_ += robotOdometry_->angular_est_vel_;
+    robotOdometry_->theta_est_pose_ += robotOdometry_->angular_est_vel_ * deltaTime;
 
-    float velocity_est_x = robotOdometry_->linear_est_vel_ * cos(robotOdometry_->theta_est_pose_);
-    float velocity_est_y = robotOdometry_->linear_est_vel_ * sin(robotOdometry_->theta_est_pose_);
+    robotOdometry_->velocity_est_x = robotOdometry_->linear_est_vel_ * cos(robotOdometry_->theta_est_pose_);
+    robotOdometry_->velocity_est_y = robotOdometry_->linear_est_vel_ * sin(robotOdometry_->theta_est_pose_);
 
-    robotOdometry_->x_est_pose_ += velocity_est_x * delta_time;
-    robotOdometry_->y_est_pose_ += velocity_est_y * delta_time;
+    robotOdometry_->x_est_pose_ += robotOdometry_->velocity_est_x * deltaTime;
+    robotOdometry_->y_est_pose_ += robotOdometry_->velocity_est_y * deltaTime;
 }
+
+float Kinematics::get_x_est_pose() {
+    return robotOdometry_->x_est_pose_;
+}
+
+float Kinematics::get_y_est_pose() {
+    return robotOdometry_->y_est_pose_;
+}
+
+float Kinematics::get_theta_est_pose() {
+    return robotOdometry_->theta_est_pose_;
+}
+
+float Kinematics::get_velocity_est_x() {
+    return robotOdometry_->velocity_est_x;
+}
+
+float Kinematics::get_velocity_est_y() {
+    return robotOdometry_->velocity_est_y;
+}
+
+float Kinematics::get_velocity_est_theta() {
+    return robotOdometry_->angular_est_vel_;
+}
+
 }  // namespace rover_odometry
