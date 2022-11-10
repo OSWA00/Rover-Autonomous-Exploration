@@ -56,13 +56,13 @@ include_directories(
 add_library(${PROJECT_NAME}_core
    src/Kinematics.cpp
 )
-target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
+#target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
 
 add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}_node.cpp
   src/RoverOdometry.cpp
 )
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
+#target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_11)
 
 add_dependencies(${PROJECT_NAME}_core
   ${catkin_EXPORTED_TARGETS}
