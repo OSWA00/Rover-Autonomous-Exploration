@@ -61,13 +61,12 @@ void Kinematics::estimatePosition(float deltaTime) {
     estimateAngularVelocity();
     estimateLinearVelocity();
 
-    robotOdometry_->theta_est_pose_ += robotOdometry_->angular_est_vel_ * deltaTime;
-
     robotOdometry_->velocity_est_x = robotOdometry_->linear_est_vel_ * cos(robotOdometry_->theta_est_pose_);
     robotOdometry_->velocity_est_y = robotOdometry_->linear_est_vel_ * sin(robotOdometry_->theta_est_pose_);
 
     robotOdometry_->x_est_pose_ += robotOdometry_->velocity_est_x * deltaTime;
     robotOdometry_->y_est_pose_ += robotOdometry_->velocity_est_y * deltaTime;
+    robotOdometry_->theta_est_pose_ += robotOdometry_->angular_est_vel_ * deltaTime;
 }
 
 float Kinematics::get_x_est_pose() {
