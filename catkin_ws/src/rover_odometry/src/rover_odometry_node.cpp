@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
 
 
     rover_odometry::RoverOdometry roverOdometry(nodeHandle);
-    ros::Rate rate(50);
+    ros::Rate rate(400);
 
     while (ros::ok()) {
         roverOdometry.publishOdom();
