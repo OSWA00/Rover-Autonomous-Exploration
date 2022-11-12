@@ -62,6 +62,9 @@ void RoverOdometry::publishOdom() {
     tf2::Quaternion odomQuaternion;
     odomQuaternion.setRPY(0, 0, poseTheta);
 
+    ROS_DEBUG("Theta %f", poseTheta);
+    ROS_DEBUG("Quaternion: Z: %f  W: %f", odomQuaternion.getZ(), odomQuaternion.getW());
+
     geometry_msgs::Quaternion odomMessage;
     tf2::convert(odomQuaternion, odomMessage);
 
