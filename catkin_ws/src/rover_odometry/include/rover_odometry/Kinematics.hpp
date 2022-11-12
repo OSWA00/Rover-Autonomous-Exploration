@@ -1,9 +1,10 @@
 #pragma once
 
+#include <Eigen/Dense>
 #include <memory>
-#include <vector>
 
 namespace rover_odometry {
+    using Eigen::Matrix2d;
 
 class Kinematics {
    public:
@@ -48,7 +49,9 @@ class Kinematics {
 
     std::unique_ptr<RobotOdometry> robotOdometry_;
 
-    std::vector<float>* wheelLeftFilterValues_;
-    std::vector<float>* wheelRightFilterValues_;
+    std::unique_ptr<Matrix2d> wheelLeftFilterValues_;
+
+    std::unique_ptr<Matrix2d> wheelRightFilterValues_;
+
 };
 }  // namespace rover_odometry

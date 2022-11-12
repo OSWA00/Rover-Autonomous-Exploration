@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-#include <Eigen/Dense>
+
 
 namespace rover_odometry {
 struct Kinematics::RobotParameters {
@@ -26,12 +26,9 @@ Kinematics::Kinematics() {
     robotParamaters_ = std::unique_ptr<RobotParameters>(new RobotParameters);
     robotOdometry_ = std::unique_ptr<RobotOdometry>(new RobotOdometry);
 
-    wheelLeftFilterValues_ = new std::vector<float>(51, 0.0);
-    wheelRightFilterValues_ = new std::vector<float>(51, 0.0);
-    // wheelLeftFilterValues_;
+    wheelLeftFilterValues_ = std::unique_ptr<Matrix2d>(new Matrix2d(51, 1));
+    wheelRightFilterValues_ = std::unique_ptr<Matrix2d>(new Matrix2d(51, 1));
 
-    // wheelLeftFilterValues_[50] = 1.0;
-    // wheelRightFilterValues_[50] = 1.0;
 }
 
 Kinematics::~Kinematics() = default;
@@ -103,7 +100,7 @@ float Kinematics::getVelocityEstTheta() {
 }
 
 float Kinematics::filterWheelVelocity(float w) {
-    std::vector<float> filterCoefficients(51, 0.0);
+    // std::vector<float> filterCoefficients(51, 0.0);
 
     // TODO
     // Recorrer datos de 2 - 50 al 1- 49
