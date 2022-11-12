@@ -88,6 +88,8 @@ void RoverOdometry::publishOdom() {
     odom.pose.pose.position.y = poseY;
     odom.pose.pose.position.z = 0.0;
 
+    odom.pose.pose.orientation = odomMessage;
+
     odom.child_frame_id = childFrameId_;
 
     odom.twist.twist.linear.x = velocityX;
