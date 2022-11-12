@@ -51,13 +51,13 @@ void RoverOdometry::publishOdom() {
     kinematics_.estimatePosition(timeDelta);
     timeLast_ = timeCurrent_;
 
-    float velocityX = kinematics_.get_velocity_est_x();
-    float velocityY = kinematics_.get_velocity_est_y();
-    float velocityTheta = kinematics_.get_velocity_est_theta();
+    float velocityX = kinematics_.getVelocityEstX();
+    float velocityY = kinematics_.getVelocityEstY();
+    float velocityTheta = kinematics_.getVelocityEstTheta();
 
-    float poseX = kinematics_.get_x_est_pose();
-    float poseY = kinematics_.get_y_est_pose();
-    float poseTheta = kinematics_.get_theta_est_pose();
+    float poseX = kinematics_.getXEstPose();
+    float poseY = kinematics_.getYEstPose();
+    float poseTheta = kinematics_.getThetaEstPose();
 
     tf2::Quaternion odomQuaternion;
     odomQuaternion.setRPY(0, 0, poseTheta);

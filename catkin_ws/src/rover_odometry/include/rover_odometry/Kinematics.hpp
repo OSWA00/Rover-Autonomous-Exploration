@@ -24,17 +24,17 @@ class Kinematics {
 
     void setLeftWheelEstVel(float velocity);
 
-    float get_x_est_pose();
+    float getXEstPose();
 
-    float get_y_est_pose();
+    float getYEstPose();
 
-    float get_theta_est_pose();
+    float getThetaEstPose();
 
-    float get_velocity_est_x();
+    float getVelocityEstX();
 
-    float get_velocity_est_y();
+    float getVelocityEstY();
 
-    float get_velocity_est_theta();
+    float getVelocityEstTheta();
 
    private:
     struct RobotParameters;
