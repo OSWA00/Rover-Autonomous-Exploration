@@ -34,14 +34,16 @@ bool RoverOdometry::readParameters() {
 }
 
 void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
-    float angular_velocity = message.data;
-    float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
+    float angularVelocity = message.data;
+    float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
+    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     kinematics_.setLeftWheelEstVel(velocity);
 }
 
 void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
-    float angular_velocity = message.data;
-    float velocity = kinematics_.estimateWheelLinearVelocity(angular_velocity);
+    float angularVelocity = message.data;
+    float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
+    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     kinematics_.setRightWheelEstVel(velocity);
 }
 
@@ -74,7 +76,7 @@ void RoverOdometry::publishOdom() {
 
     odomTransform_.transform.translation.x = poseX;
     odomTransform_.transform.translation.y = poseY;
-    odomTransform_.transform.translation.z = 0.0;
+    odomTransform_.transform.translation.z = 0.048;
 
     odomTransform_.transform.rotation = odomMessage;
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 namespace rover_odometry {
 
@@ -36,6 +37,8 @@ class Kinematics {
 
     float getVelocityEstTheta();
 
+    float filterWheelVelocity(float w);
+
    private:
     struct RobotParameters;
 
@@ -44,5 +47,8 @@ class Kinematics {
     std::unique_ptr<RobotParameters> robotParamaters_;
 
     std::unique_ptr<RobotOdometry> robotOdometry_;
+
+    std::vector<float>* wheelLeftFilterValues_;
+    std::vector<float>* wheelRightFilterValues_;
 };
 }  // namespace rover_odometry
