@@ -1,10 +1,9 @@
 #pragma once
 
-#include <Eigen/Dense>
+// #include <Eigen/Dense>
 #include <memory>
 
 namespace rover_odometry {
-    using Eigen::Matrix2d;
 
 class Kinematics {
    public:
@@ -38,8 +37,6 @@ class Kinematics {
 
     float getVelocityEstTheta();
 
-    float filterWheelVelocity(float w);
-
    private:
     struct RobotParameters;
 
@@ -48,10 +45,5 @@ class Kinematics {
     std::unique_ptr<RobotParameters> robotParamaters_;
 
     std::unique_ptr<RobotOdometry> robotOdometry_;
-
-    std::unique_ptr<Matrix2d> wheelLeftFilterValues_;
-
-    std::unique_ptr<Matrix2d> wheelRightFilterValues_;
-
 };
 }  // namespace rover_odometry

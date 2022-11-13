@@ -35,15 +35,15 @@ bool RoverOdometry::readParameters() {
 
 void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
     float angularVelocity = message.data;
-    float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
-    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+    // float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
+    float velocity = kinematics_.estimateWheelLinearVelocity(angularVelocity);
     kinematics_.setLeftWheelEstVel(velocity);
 }
 
 void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
     float angularVelocity = message.data;
-    float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
-    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+    // float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
+    float velocity = kinematics_.estimateWheelLinearVelocity(angularVelocity);
     kinematics_.setRightWheelEstVel(velocity);
 }
 

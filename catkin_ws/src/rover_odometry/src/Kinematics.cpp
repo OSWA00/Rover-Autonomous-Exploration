@@ -2,8 +2,6 @@
 
 #include <math.h>
 
-
-
 namespace rover_odometry {
 struct Kinematics::RobotParameters {
     float wheelSeparation_ = 0.0;
@@ -25,10 +23,6 @@ struct Kinematics::RobotOdometry {
 Kinematics::Kinematics() {
     robotParamaters_ = std::unique_ptr<RobotParameters>(new RobotParameters);
     robotOdometry_ = std::unique_ptr<RobotOdometry>(new RobotOdometry);
-
-    wheelLeftFilterValues_ = std::unique_ptr<Matrix2d>(new Matrix2d(51, 1));
-    wheelRightFilterValues_ = std::unique_ptr<Matrix2d>(new Matrix2d(51, 1));
-
 }
 
 Kinematics::~Kinematics() = default;
@@ -99,15 +93,15 @@ float Kinematics::getVelocityEstTheta() {
     return robotOdometry_->angular_est_vel_;
 }
 
-float Kinematics::filterWheelVelocity(float w) {
-    // std::vector<float> filterCoefficients(51, 0.0);
+// float Kinematics::filterWheelVelocity(float w) {
+//     // std::vector<float> filterCoefficients(51, 0.0);
 
-    // TODO
-    // Recorrer datos de 2 - 50 al 1- 49
-    // Index 0 asignar w
-    // Multiplicar filterCoefficients * Valores de las llantas
-    float x = 0.0;
-    return x;
-}
+//     // TODO
+//     // Recorrer datos de 2 - 50 al 1- 49
+//     // Index 0 asignar w
+//     // Multiplicar filterCoefficients * Valores de las llantas
+//     float x = 0.0;
+//     return x;
+// }
 
 }  // namespace rover_odometry
