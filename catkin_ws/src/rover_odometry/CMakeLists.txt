@@ -59,6 +59,7 @@ include_directories(
 
 add_library(${PROJECT_NAME}_core
    src/Kinematics.cpp
+   src/FIRFilter.cpp
 )
 #target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
 
