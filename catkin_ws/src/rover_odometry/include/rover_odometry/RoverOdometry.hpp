@@ -10,6 +10,7 @@
 #include <tf2_ros/transform_broadcaster.h>
 
 #include "rover_odometry/Kinematics.hpp"
+#include "rover_odometry/FIRFilter.hpp"
 
 namespace rover_odometry {
 class RoverOdometry {
@@ -46,5 +47,8 @@ class RoverOdometry {
     float wheelSeparation_;
 
     Kinematics kinematics_;
+
+    FIRFilter leftWheelFilter_;
+    FIRFilter rightWheelFilter_;
 };
 }  // namespace rover_odometry
