@@ -6,8 +6,8 @@ namespace rover_odometry {
     class FIRFilter
     {
     private:
-        Eigen::MatrixXf filterValues_;
-        Eigen::MatrixXf filterCoefficients_;
+        Eigen::VectorXf filterCoefficients_;
+        Eigen::VectorXf filterValues_;
     public:
         FIRFilter();
         virtual ~FIRFilter();

@@ -1,29 +1,30 @@
 #include "rover_odometry/FIRFilter.hpp"
 
-namespace rover_odometry {
-FIRFilter::FIRFilter() : filterValues_(51, 1), filterCoefficients_(1, 51) {
-    filterValues_.setZero();
-    filterValues_(50, 0) = 1.0;  // Set last value to 1.0
+#include <iostream>
 
-    filterCoefficients_.setConstant(1.0f);
-    filterValues_(48, 0) = 4.5f;
+namespace rover_odometry {
+FIRFilter::FIRFilter() : filterCoefficients_(51), filterValues_(51) {
+    filterValues_.setZero();
+    filterValues_(50) = 1.0;  
+
+    // TODO add filter coefficients
+    filterCoefficients_.setOnes();  //! REMOVE
+    filterCoefficients_ = filterCoefficients_.transpose();
 }
 
 FIRFilter::~FIRFilter() {}
 
 float FIRFilter::filterWheelAngularVelocity(float omega) {
-    float n_rows = filterValues_.rows(); 
-    
+    long int n_rows = filterValues_.rows();
+
     for (size_t i = n_rows - 2; i > 0; --i) {
-        filterValues_(i, 0) = filterValues_(i - 1, 0);
+        filterValues_(i) = filterValues_(i - 1);
     }
 
-    filterValues_(0, 0) = omega;
+    filterValues_(0) = omega;
 
+    float filteredOmega = filterCoefficients_.dot(filterValues_);
 
-
-    // Eigen::Matrix fitleredOmega = 
-
-    return 0.0f;
+    return filteredOmega;
 }
-};  // namespace rover_odometry
+}  // namespace rover_odometry

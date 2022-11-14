@@ -15,8 +15,6 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
 
     timeLast_ = ros::Time::now();
 
-    leftWheelFilter_.filterWheelAngularVelocity(0.0f);
-
     ROS_INFO("Successfully launched node.");
 }
 
@@ -37,15 +35,15 @@ bool RoverOdometry::readParameters() {
 
 void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
     float angularVelocity = message.data;
-    // float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
-    float velocity = kinematics_.estimateWheelLinearVelocity(angularVelocity);
+    float filteredAngularVelocity = leftWheelFilter_.filterWheelAngularVelocity(angularVelocity);
+    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     kinematics_.setLeftWheelEstVel(velocity);
 }
 
 void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
     float angularVelocity = message.data;
-    // float filteredAngularVelocity = kinematics_.filterWheelVelocity(angularVelocity);
-    float velocity = kinematics_.estimateWheelLinearVelocity(angularVelocity);
+    float filteredAngularVelocity = rightWheelFilter_.filterWheelAngularVelocity(angularVelocity);
+    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     kinematics_.setRightWheelEstVel(velocity);
 }
 
