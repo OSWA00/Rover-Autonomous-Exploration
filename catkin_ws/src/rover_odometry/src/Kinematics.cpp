@@ -93,4 +93,15 @@ float Kinematics::getVelocityEstTheta() {
     return robotOdometry_->angular_est_vel_;
 }
 
+// float Kinematics::filterWheelVelocity(float w) {
+//     // std::vector<float> filterCoefficients(51, 0.0);
+
+//     // TODO
+//     // Recorrer datos de 2 - 50 al 1- 49
+//     // Index 0 asignar w
+//     // Multiplicar filterCoefficients * Valores de las llantas
+//     float x = 0.0;
+//     return x;
+// }
+
 }  // namespace rover_odometry

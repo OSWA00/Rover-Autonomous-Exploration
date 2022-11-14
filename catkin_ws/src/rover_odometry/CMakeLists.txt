@@ -20,6 +20,8 @@ COMPONENTS
   roslint
 )
 
+find_package(Eigen3 REQUIRED)
+
 ###################################
 ## catkin specific configuration ##
 ###################################
@@ -32,6 +34,7 @@ COMPONENTS
 catkin_package(
   INCLUDE_DIRS 
     include
+    ${EIGEN3_INCLUDE_DIR}
   LIBRARIES
     ${PROJECT_NAME}_core
   CATKIN_DEPENDS
@@ -51,10 +54,12 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+  ${EIGEN3_INCLUDE_DIR}
 )
 
 add_library(${PROJECT_NAME}_core
    src/Kinematics.cpp
+   src/FIRFilter.cpp
 )
 #target_compile_features(${PROJECT_NAME}_core INTERFACE cxx_std_11)
 

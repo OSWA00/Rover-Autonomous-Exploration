@@ -1,0 +1,16 @@
+#pragma once
+
+#include <Eigen/Dense>
+
+namespace rover_odometry {
+    class FIRFilter
+    {
+    private:
+        Eigen::MatrixXf filterValues_;
+        Eigen::MatrixXf filterCoefficients_;
+    public:
+        FIRFilter();
+        virtual ~FIRFilter();
+        float filterWheelAngularVelocity(float omega);
+    };
+}
