@@ -15,6 +15,8 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
 
     timeLast_ = ros::Time::now();
 
+    leftWheelFilter_.filterWheelAngularVelocity(0.0f);
+
     ROS_INFO("Successfully launched node.");
 }
 
