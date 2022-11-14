@@ -37,8 +37,9 @@ class RoverOdometry {
 
     ros::Publisher odom_;
     std::string odomTopic_;
-    std::string frameId_;
-    std::string childFrameId_;
+    std::string odomFrame_;
+    std::string baseFrame_;
+    std::string cameraFrame_;
 
     tf2_ros::TransformBroadcaster odomBroadcaster_;
     geometry_msgs::TransformStamped odomTransform_;

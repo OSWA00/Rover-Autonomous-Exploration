@@ -27,8 +27,9 @@ bool RoverOdometry::readParameters() {
     if (!nodeHandle_.getParam("wheel_radius", wheelRadius_)) return false;
     if (!nodeHandle_.getParam("wheel_separation", wheelSeparation_))
         return false;
-    if (!nodeHandle_.getParam("odom_frame", frameId_)) return false;
-    if (!nodeHandle_.getParam("base_frame", childFrameId_)) return false;
+    if (!nodeHandle_.getParam("odom_frame", odomFrame_)) return false;
+    if (!nodeHandle_.getParam("base_frame", baseFrame_)) return false;
+    if (!nodeHandle_.getParam("base_frame", cameraFrame_)) return false;
 
     return true;
 }
@@ -71,8 +72,8 @@ void RoverOdometry::publishOdom() {
     tf2::convert(odomQuaternion, odomMessage);
 
     odomTransform_.header.stamp = ros::Time::now();
-    odomTransform_.header.frame_id = frameId_;
-    odomTransform_.child_frame_id = childFrameId_;
+    odomTransform_.header.frame_id = odomFrame_;
+    odomTransform_.child_frame_id = baseFrame_;
 
     odomTransform_.transform.translation.x = poseX;
     odomTransform_.transform.translation.y = poseY;
@@ -84,7 +85,7 @@ void RoverOdometry::publishOdom() {
 
     nav_msgs::Odometry odom;
     odom.header.stamp = timeCurrent_;
-    odom.header.frame_id = frameId_;
+    odom.header.frame_id = odomFrame_;
 
     odom.pose.pose.position.x = poseX;
     odom.pose.pose.position.y = poseY;
@@ -92,7 +93,7 @@ void RoverOdometry::publishOdom() {
 
     odom.pose.pose.orientation = odomMessage;
 
-    odom.child_frame_id = childFrameId_;
+    odom.child_frame_id = baseFrame_;
 
     odom.twist.twist.linear.x = velocityX;
     odom.twist.twist.linear.y = velocityY;
