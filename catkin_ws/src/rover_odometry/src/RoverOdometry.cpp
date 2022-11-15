@@ -15,6 +15,8 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
 
     timeLast_ = ros::Time::now();
 
+    publishCameraLink();
+
     ROS_INFO("Successfully launched node.");
 }
 
@@ -29,22 +31,26 @@ bool RoverOdometry::readParameters() {
         return false;
     if (!nodeHandle_.getParam("odom_frame", odomFrame_)) return false;
     if (!nodeHandle_.getParam("base_frame", baseFrame_)) return false;
-    if (!nodeHandle_.getParam("base_frame", cameraFrame_)) return false;
+    if (!nodeHandle_.getParam("camera_frame", cameraFrame_)) return false;
 
     return true;
 }
 
 void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
     float angularVelocity = message.data;
-    float filteredAngularVelocity = leftWheelFilter_.filterWheelAngularVelocity(angularVelocity);
-    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+    float filteredAngularVelocity =
+        leftWheelFilter_.filterWheelAngularVelocity(angularVelocity);
+    float velocity =
+        kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     kinematics_.setLeftWheelEstVel(velocity);
 }
 
 void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
     float angularVelocity = message.data;
-    float filteredAngularVelocity = rightWheelFilter_.filterWheelAngularVelocity(angularVelocity);
-    float velocity = kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+    float filteredAngularVelocity =
+        rightWheelFilter_.filterWheelAngularVelocity(angularVelocity);
+    float velocity =
+        kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     kinematics_.setRightWheelEstVel(velocity);
 }
 
@@ -66,7 +72,8 @@ void RoverOdometry::publishOdom() {
     odomQuaternion.setRPY(0, 0, poseTheta);
 
     ROS_DEBUG("Theta %f", poseTheta);
-    ROS_DEBUG("Quaternion: Z: %f  W: %f", odomQuaternion.getZ(), odomQuaternion.getW());
+    ROS_DEBUG("Quaternion: Z: %f  W: %f", odomQuaternion.getZ(),
+              odomQuaternion.getW());
 
     geometry_msgs::Quaternion odomMessage;
     tf2::convert(odomQuaternion, odomMessage);
@@ -100,6 +107,26 @@ void RoverOdometry::publishOdom() {
     odom.twist.twist.angular.z = velocityTheta;
 
     odom_.publish(odom);
+}
+
+void RoverOdometry::publishCameraLink() {
+    cameraLinkTransform_.header.stamp = ros::Time::now();
+    cameraLinkTransform_.header.frame_id = baseFrame_;
+    cameraLinkTransform_.child_frame_id = cameraFrame_;
+
+    cameraLinkTransform_.transform.translation.x = -0.2002;
+    cameraLinkTransform_.transform.translation.y = 0.0;
+    cameraLinkTransform_.transform.translation.z = 0.15178;
+
+    tf2::Quaternion cameraQuat;
+    cameraQuat.setRPY(0.0, 0.0, 0.0);
+
+    cameraLinkTransform_.transform.rotation.x = cameraQuat.x();
+    cameraLinkTransform_.transform.rotation.y = cameraQuat.y();
+    cameraLinkTransform_.transform.rotation.z = cameraQuat.z();
+    cameraLinkTransform_.transform.rotation.w = cameraQuat.w();
+
+    cameraLinkBroadcaster_.sendTransform(cameraLinkTransform_);
 }
 
 }  // namespace rover_odometry

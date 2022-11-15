@@ -8,6 +8,7 @@
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2_ros/transform_broadcaster.h>
+#include <tf2_ros/static_transform_broadcaster.h>
 
 #include "rover_odometry/Kinematics.hpp"
 #include "rover_odometry/FIRFilter.hpp"
@@ -18,6 +19,7 @@ class RoverOdometry {
     RoverOdometry(ros::NodeHandle& nodeHandle);
     virtual ~RoverOdometry();
     void publishOdom();
+    void publishCameraLink();
 
    private:
     bool readParameters();
@@ -43,6 +45,9 @@ class RoverOdometry {
 
     tf2_ros::TransformBroadcaster odomBroadcaster_;
     geometry_msgs::TransformStamped odomTransform_;
+
+    tf2_ros::StaticTransformBroadcaster cameraLinkBroadcaster_;
+    geometry_msgs::TransformStamped cameraLinkTransform_;
 
     float wheelRadius_;
     float wheelSeparation_;
