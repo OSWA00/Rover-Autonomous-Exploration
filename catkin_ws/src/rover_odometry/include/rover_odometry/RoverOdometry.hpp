@@ -7,11 +7,11 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-#include <tf2_ros/transform_broadcaster.h>
 #include <tf2_ros/static_transform_broadcaster.h>
+#include <tf2_ros/transform_broadcaster.h>
 
-#include "rover_odometry/Kinematics.hpp"
 #include "rover_odometry/FIRFilter.hpp"
+#include "rover_odometry/Kinematics.hpp"
 
 namespace rover_odometry {
 class RoverOdometry {
