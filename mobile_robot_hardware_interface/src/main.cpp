@@ -26,7 +26,7 @@ Vel_controller CONTROLLER_MOTOR_RIGHT;
 Vel_controller CONTROLLER_MOTOR_LEFT;
 
 unsigned long int TIME_CURRENT;
-float TIME_DELTA;
+double TIME_DELTA;
 unsigned long int TIME_LAST;
 
 void encoder_right_isr_handler();
@@ -37,8 +37,6 @@ ros::Subscriber<geometry_msgs::Twist> cmd_vel("rover/cmd_vel", &cmd_vel_callback
 
 void setup()
 {
-    Serial.begin(115200);
-
     nh.initNode();
     nh.advertise(wl);
     nh.advertise(wr);
@@ -61,8 +59,9 @@ void setup()
 
 void loop()
 {
-    TIME_CURRENT = millis();
-    TIME_DELTA = (TIME_CURRENT - TIME_LAST) * 0.001;
+
+    TIME_CURRENT = micros();
+    TIME_DELTA = (TIME_CURRENT - TIME_LAST) / 0xF4240;
     TIME_LAST = TIME_CURRENT;
 
     float omega_left = calculate_omega(ENCODER_LEFT, TIME_DELTA);
