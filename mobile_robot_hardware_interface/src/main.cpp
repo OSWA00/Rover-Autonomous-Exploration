@@ -20,8 +20,10 @@ double REF_LEFT_VEL = 0.0;
 
 encoder::Encoder ENCODER_LEFT;
 encoder::Encoder ENCODER_RIGHT;
-Motor MOTOR_RIGHT;
-Motor MOTOR_LEFT;
+
+motor::Motor MOTOR_RIGHT;
+motor::Motor MOTOR_LEFT;
+
 Vel_controller CONTROLLER_MOTOR_RIGHT;
 Vel_controller CONTROLLER_MOTOR_LEFT;
 
@@ -37,7 +39,6 @@ ros::Subscriber<geometry_msgs::Twist> cmd_vel("rover/cmd_vel", &cmd_vel_callback
 
 void setup()
 {
-    Serial.begin(115200);
     nh.initNode();
     nh.advertise(wl);
     nh.advertise(wr);
@@ -48,8 +49,8 @@ void setup()
     encoder::init_encoder(ENCODER_RIGHT, 0x2);
     encoder::init_encoder(ENCODER_LEFT, 0xC);
 
-    init_motor(MOTOR_RIGHT, 0x5, 0x0);
-    init_motor(MOTOR_LEFT, 0x19, 0x1);
+    motor::init_motor(MOTOR_RIGHT, 0x5, 0x0);
+    motor::init_motor(MOTOR_LEFT, 0x19, 0x1);
 
     init_controller(CONTROLLER_MOTOR_RIGHT, 10, 0.01);
     init_controller(CONTROLLER_MOTOR_LEFT, 10, 0.01);
@@ -60,7 +61,6 @@ void setup()
 
 void loop()
 {
-    Serial.begin(115200);
     TIME_CURRENT = millis();
     TIME_DELTA = (TIME_CURRENT - TIME_LAST) / 0x3E8;
     TIME_LAST = TIME_CURRENT;
@@ -80,8 +80,8 @@ void loop()
     wr_msg.data = omega_right;
     wr.publish(&wr_msg);
 
-    send_pwm(MOTOR_RIGHT, u_right);
-    send_pwm(MOTOR_LEFT, u_left);
+    motor::send_pwm(MOTOR_RIGHT, u_right);
+    motor::send_pwm(MOTOR_LEFT, u_left);
 
     nh.spinOnce();
     delay(5);
