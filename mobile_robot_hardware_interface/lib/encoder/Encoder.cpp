@@ -7,7 +7,6 @@ void init_encoder(Encoder &encoder, unsigned int channel_A_pin) {
 
 double calculate_omega(Encoder &encoder, double time_delta) {
     unsigned int total_pulses = 0x276;
-    Serial.println(encoder.pulses);
     double omega = 2 * M_PI * encoder.pulses / (time_delta * total_pulses);
     encoder.pulses = 0x0;
     return omega;
