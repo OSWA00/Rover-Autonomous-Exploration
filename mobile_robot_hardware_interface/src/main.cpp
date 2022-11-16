@@ -12,18 +12,18 @@ void encoder_right_isr_handler();
 void encoder_left_isr_handler();
 void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel);
 
-ros::NodeHandle NODE_HANDLE;
+// ros::NodeHandle NODE_HANDLE;
 
-std_msgs::Float32 WL_MSG;
-ros::Publisher WL("rover/wl", &WL_MSG);
+// std_msgs::Float32 WL_MSG;
+// ros::Publisher WL("rover/wl", &WL_MSG);
 
-std_msgs::Float32 WR_MSG;
-ros::Publisher WR("rover/wr", &WR_MSG);
+// std_msgs::Float32 WR_MSG;
+// ros::Publisher WR("rover/wr", &WR_MSG);
 
-ros::Subscriber<geometry_msgs::Twist> CMD_VEL("rover/cmd_vel", &cmd_vel_callback);
+// ros::Subscriber<geometry_msgs::Twist> CMD_VEL("rover/cmd_vel", &cmd_vel_callback);
 
-double REF_RIGHT_VEL = 0.0;
-double REF_LEFT_VEL = 0.0;
+// double REF_RIGHT_VEL = 0.0;
+// double REF_LEFT_VEL = 0.0;
 
 encoder::Encoder ENCODER_LEFT;
 encoder::Encoder ENCODER_RIGHT;
@@ -39,12 +39,13 @@ double TIME_DELTA;
 unsigned long int TIME_LAST;
 
 void setup() {
-    NODE_HANDLE.initNode();
+    // NODE_HANDLE.initNode();
 
-    NODE_HANDLE.advertise(WL);
-    NODE_HANDLE.advertise(WR);
+    // NODE_HANDLE.advertise(WL);
+    // NODE_HANDLE.advertise(WR);
 
-    NODE_HANDLE.subscribe(CMD_VEL);
+    // NODE_HANDLE.subscribe(CMD_VEL);
+    Serial.begin(115200);
 
     TIME_LAST = millis();
 
@@ -63,30 +64,39 @@ void setup() {
 
 void loop() {
     TIME_CURRENT = millis();
-    TIME_DELTA = (TIME_CURRENT - TIME_LAST) / 0x3E8;
+    TIME_DELTA = (TIME_CURRENT - TIME_LAST) / 1000;
     TIME_LAST = TIME_CURRENT;
 
     double omega_left = encoder::calculate_omega(ENCODER_LEFT, TIME_DELTA);
-    double velocity_left = kinematics::convert_omega_to_vel(omega_left);
+    // double velocity_left = kinematics::convert_omega_to_vel(omega_left);
 
     double omega_right = encoder::calculate_omega(ENCODER_RIGHT, TIME_DELTA);
-    double velocity_right = kinematics::convert_omega_to_vel(omega_right);
+    // double velocity_right = kinematics::convert_omega_to_vel(omega_right);
 
-    double u_right = velocity_controller::calculate_u(CONTROLLER_RIGHT, velocity_right, REF_RIGHT_VEL, TIME_DELTA);
-    double u_left = velocity_controller::calculate_u(CONTROLLER_LEFT, velocity_left, REF_LEFT_VEL, TIME_DELTA);
+    // double u_right = velocity_controller::calculate_u(CONTROLLER_RIGHT, velocity_right, CONTROLLER_RIGHT.velocity_reference, TIME_DELTA);
+    // double u_left = velocity_controller::calculate_u(CONTROLLER_LEFT, velocity_left, CONTROLLER_LEFT.velocity_reference, TIME_DELTA);
 
-    double x = M_PI;
-    WL_MSG.data = (float)x;
-    WL.publish(&WL_MSG);
+    Serial.print("Delta: ");
+    Serial.println(TIME_DELTA);
 
-    WR_MSG.data = (float)x;
-    WR.publish(&WR_MSG);
+    Serial.print("Omega left: ");
+    Serial.println(omega_left);
 
-    motor::send_pwm(MOTOR_RIGHT, u_right);
-    motor::send_pwm(MOTOR_LEFT, u_left);
+    Serial.print("Omega right: ");
+    Serial.println(omega_right);
 
-    NODE_HANDLE.spinOnce();
-    delay(5);
+    // double x = M_PI;
+    // WL_MSG.data = (float)x;
+    // WL.publish(&WL_MSG);
+
+    // WR_MSG.data = (float)x;
+    // WR.publish(&WR_MSG);
+
+    motor::send_pwm(MOTOR_RIGHT, 0.3);
+    motor::send_pwm(MOTOR_LEFT, 0.0);
+
+    // NODE_HANDLE.spinOnce();
+    delay(1000);
 }
 
 void encoder_right_isr_handler() {
@@ -100,6 +110,6 @@ void encoder_left_isr_handler() {
 void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel) {
     double velocity_linear_x = cmd_vel.linear.x;
     double velocity_angular_z = cmd_vel.angular.z;
-    REF_RIGHT_VEL = kinematics::calculate_right_velocity(velocity_linear_x, velocity_angular_z);
-    REF_LEFT_VEL = kinematics::calculate_left_velocity(velocity_linear_x, velocity_angular_z);
+    CONTROLLER_RIGHT.velocity_reference = kinematics::calculate_right_velocity(velocity_linear_x, velocity_angular_z);
+    CONTROLLER_LEFT.velocity_reference = kinematics::calculate_left_velocity(velocity_linear_x, velocity_angular_z);
 }

@@ -4,7 +4,7 @@
 namespace encoder {
 struct Encoder {
     unsigned int channel_A_pin;
-    unsigned int pulses;
+    unsigned int pulses = 0x0;
 };
 
 void init_encoder(Encoder &encoder, unsigned int channel_A_pin);
