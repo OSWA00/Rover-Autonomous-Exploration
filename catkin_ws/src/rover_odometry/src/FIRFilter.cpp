@@ -39,7 +39,7 @@ FIRFilter::FIRFilter() : filterCoefficients_(51), filterValues_(51) {
 
 FIRFilter::~FIRFilter() {}
 
-float FIRFilter::filterWheelAngularVelocity(float omega) {
+double FIRFilter::filterWheelAngularVelocity(const double &omega) {
     long int n_rows = filterValues_.rows();
 
     for (size_t i = n_rows - 2; i > 0; --i) {
@@ -48,8 +48,9 @@ float FIRFilter::filterWheelAngularVelocity(float omega) {
 
     filterValues_(0) = omega;
 
-    float filteredOmega = filterCoefficients_.dot(filterValues_);
+    double filteredOmega = filterCoefficients_.dot(filterValues_);
 
     return filteredOmega;
 }
+
 }  // namespace rover_odometry

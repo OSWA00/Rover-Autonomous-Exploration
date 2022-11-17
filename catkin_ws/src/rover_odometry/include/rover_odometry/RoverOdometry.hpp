@@ -49,8 +49,8 @@ class RoverOdometry {
     tf2_ros::StaticTransformBroadcaster cameraLinkBroadcaster_;
     geometry_msgs::TransformStamped cameraLinkTransform_;
 
-    float wheelRadius_;
-    float wheelSeparation_;
+    double wheelRadius_;
+    double wheelSeparation_;
 
     Kinematics kinematics_;
 
