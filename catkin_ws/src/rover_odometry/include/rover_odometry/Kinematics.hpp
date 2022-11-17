@@ -1,6 +1,5 @@
 #pragma once
 
-// #include <Eigen/Dense>
 #include <memory>
 
 namespace rover_odometry {
@@ -11,31 +10,31 @@ class Kinematics {
 
     virtual ~Kinematics();
 
-    void addRobotParameters(float &wheelSeparation, float &wheelRadius);
+    void addRobotParameters(const double &wheelSeparation, const double &wheelRadius);
 
-    float estimateWheelLinearVelocity(float w);
+    double estimateWheelLinearVelocity(const double &omega);
 
     void estimateLinearVelocity();
 
     void estimateAngularVelocity();
 
-    void estimatePosition(float deltaTime);
+    void estimatePosition(const double &deltaTime);
 
-    void setRightWheelEstVel(float velocity);
+    void setRightWheelEstVel(const double &velocity);
 
-    void setLeftWheelEstVel(float velocity);
+    void setLeftWheelEstVel(const double &velocity);
 
-    float getXEstPose();
+    double getXEstPose();
 
-    float getYEstPose();
+    double getYEstPose();
 
-    float getThetaEstPose();
+    double getThetaEstPose();
 
-    float getVelocityEstX();
+    double getVelocityEstX();
 
-    float getVelocityEstY();
+    double getVelocityEstY();
 
-    float getVelocityEstTheta();
+    double getVelocityEstTheta();
 
    private:
     struct RobotParameters;

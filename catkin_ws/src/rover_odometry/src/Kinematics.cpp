@@ -4,20 +4,20 @@
 
 namespace rover_odometry {
 struct Kinematics::RobotParameters {
-    float wheelSeparation_ = 0.0;
-    float wheelRadius_ = 0.0;
+    double wheelSeparation_ = 0.0;
+    double wheelRadius_ = 0.0;
 };
 
 struct Kinematics::RobotOdometry {
-    float right_wheel_est_vel_ = 0.0;
-    float left_wheel_est_vel_ = 0.0;
-    float linear_est_vel_ = 0.0;
-    float angular_est_vel_ = 0.0;
-    float x_est_pose_ = 0.0;
-    float y_est_pose_ = 0.0;
-    float theta_est_pose_ = 0.0;
-    float velocity_est_x = 0.0;
-    float velocity_est_y = 0.0;
+    double right_wheel_est_vel_ = 0.0;
+    double left_wheel_est_vel_ = 0.0;
+    double linear_est_vel_ = 0.0;
+    double angular_est_vel_ = 0.0;
+    double x_est_pose_ = 0.0;
+    double y_est_pose_ = 0.0;
+    double theta_est_pose_ = 0.0;
+    double velocity_est_x = 0.0;
+    double velocity_est_y = 0.0;
 };
 
 Kinematics::Kinematics() {
@@ -27,81 +27,65 @@ Kinematics::Kinematics() {
 
 Kinematics::~Kinematics() = default;
 
-void Kinematics::addRobotParameters(float &wheelSeparation, float &wheelRadius) {
+void Kinematics::addRobotParameters(const double &wheelSeparation,
+                                    const double &wheelRadius) {
     robotParamaters_->wheelRadius_ = wheelRadius;
     robotParamaters_->wheelSeparation_ = wheelSeparation;
 }
 
-float Kinematics::estimateWheelLinearVelocity(float w) {
-    float linear_velocity = w * robotParamaters_->wheelRadius_;
+double Kinematics::estimateWheelLinearVelocity(const double &omega) {
+    float linear_velocity = omega * robotParamaters_->wheelRadius_;
     return linear_velocity;
 }
 
 void Kinematics::estimateLinearVelocity() {
-    robotOdometry_->linear_est_vel_ = float((robotOdometry_->right_wheel_est_vel_ +
-                                             robotOdometry_->left_wheel_est_vel_) /
-                                            2);
+    robotOdometry_->linear_est_vel_ =
+        (double)(robotOdometry_->right_wheel_est_vel_ +
+                 robotOdometry_->left_wheel_est_vel_) /
+        2;
 }
 
 void Kinematics::estimateAngularVelocity() {
-    robotOdometry_->angular_est_vel_ = float((robotOdometry_->right_wheel_est_vel_ -
-                                              robotOdometry_->left_wheel_est_vel_) /
-                                             robotParamaters_->wheelSeparation_);
+    robotOdometry_->angular_est_vel_ =
+        (double)(robotOdometry_->right_wheel_est_vel_ -
+                 robotOdometry_->left_wheel_est_vel_) /
+        robotParamaters_->wheelSeparation_;
 }
 
-void Kinematics::setLeftWheelEstVel(float velocity) {
+void Kinematics::setLeftWheelEstVel(const double &velocity) {
     robotOdometry_->left_wheel_est_vel_ = velocity;
 }
 
-void Kinematics::setRightWheelEstVel(float velocity) {
+void Kinematics::setRightWheelEstVel(const double &velocity) {
     robotOdometry_->right_wheel_est_vel_ = velocity;
 }
 
-void Kinematics::estimatePosition(float deltaTime) {
+void Kinematics::estimatePosition(const double &deltaTime) {
     estimateAngularVelocity();
     estimateLinearVelocity();
 
-    robotOdometry_->velocity_est_x = robotOdometry_->linear_est_vel_ * cos(robotOdometry_->theta_est_pose_);
-    robotOdometry_->velocity_est_y = robotOdometry_->linear_est_vel_ * sin(robotOdometry_->theta_est_pose_);
+    robotOdometry_->velocity_est_x =
+        robotOdometry_->linear_est_vel_ * cos(robotOdometry_->theta_est_pose_);
+    robotOdometry_->velocity_est_y =
+        robotOdometry_->linear_est_vel_ * sin(robotOdometry_->theta_est_pose_);
 
     robotOdometry_->x_est_pose_ += robotOdometry_->velocity_est_x * deltaTime;
     robotOdometry_->y_est_pose_ += robotOdometry_->velocity_est_y * deltaTime;
-    robotOdometry_->theta_est_pose_ += robotOdometry_->angular_est_vel_ * deltaTime;
+    robotOdometry_->theta_est_pose_ +=
+        robotOdometry_->angular_est_vel_ * deltaTime;
 }
 
-float Kinematics::getXEstPose() {
-    return robotOdometry_->x_est_pose_;
-}
+double Kinematics::getXEstPose() { return robotOdometry_->x_est_pose_; }
 
-float Kinematics::getYEstPose() {
-    return robotOdometry_->y_est_pose_;
-}
+double Kinematics::getYEstPose() { return robotOdometry_->y_est_pose_; }
 
-float Kinematics::getThetaEstPose() {
-    return robotOdometry_->theta_est_pose_;
-}
+double Kinematics::getThetaEstPose() { return robotOdometry_->theta_est_pose_; }
 
-float Kinematics::getVelocityEstX() {
-    return robotOdometry_->velocity_est_x;
-}
+double Kinematics::getVelocityEstX() { return robotOdometry_->velocity_est_x; }
 
-float Kinematics::getVelocityEstY() {
-    return robotOdometry_->velocity_est_y;
-}
+double Kinematics::getVelocityEstY() { return robotOdometry_->velocity_est_y; }
 
-float Kinematics::getVelocityEstTheta() {
+double Kinematics::getVelocityEstTheta() {
     return robotOdometry_->angular_est_vel_;
 }
-
-// float Kinematics::filterWheelVelocity(float w) {
-//     // std::vector<float> filterCoefficients(51, 0.0);
-
-//     // TODO
-//     // Recorrer datos de 2 - 50 al 1- 49
-//     // Index 0 asignar w
-//     // Multiplicar filterCoefficients * Valores de las llantas
-//     float x = 0.0;
-//     return x;
-// }
-
 }  // namespace rover_odometry
