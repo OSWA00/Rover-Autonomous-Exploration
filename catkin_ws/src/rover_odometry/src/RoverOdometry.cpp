@@ -11,7 +11,7 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
     wr_ = nodeHandle_.subscribe(wrTopic_, 1, &RoverOdometry::wrCallback, this);
     odom_ = nodeHandle_.advertise<nav_msgs::Odometry>(odomTopic_, 50);
 
-    kinematics_.addRobotParameters(wheelRadius_, wheelSeparation_);
+    kinematics_.addRobotParameters(wheelSeparation_, wheelRadius_);
 
     timeLast_ = ros::Time::now();
 
@@ -37,36 +37,38 @@ bool RoverOdometry::readParameters() {
 }
 
 void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
-    float angularVelocity = message.data;
-    float filteredAngularVelocity =
+    double angularVelocity = message.data;
+    double filteredAngularVelocity =
         leftWheelFilter_.filterWheelAngularVelocity(angularVelocity);
-    float velocity =
+    double velocity =
         kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+    ROS_DEBUG("Left wheel velocity: %f", velocity);
     kinematics_.setLeftWheelEstVel(velocity);
 }
 
 void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
-    float angularVelocity = message.data;
-    float filteredAngularVelocity =
+    double angularVelocity = message.data;
+    double filteredAngularVelocity =
         rightWheelFilter_.filterWheelAngularVelocity(angularVelocity);
-    float velocity =
+    double velocity =
         kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+    ROS_DEBUG("Right wheel velocity: %f", velocity);
     kinematics_.setRightWheelEstVel(velocity);
 }
 
 void RoverOdometry::publishOdom() {
     timeCurrent_ = ros::Time::now();
-    float timeDelta = (timeCurrent_ - timeLast_).toSec();
+    double timeDelta = (timeCurrent_ - timeLast_).toSec();
     kinematics_.estimatePosition(timeDelta);
     timeLast_ = timeCurrent_;
 
-    float velocityX = kinematics_.getVelocityEstX();
-    float velocityY = kinematics_.getVelocityEstY();
-    float velocityTheta = kinematics_.getVelocityEstTheta();
+    double velocityX = kinematics_.getVelocityEstX();
+    double velocityY = kinematics_.getVelocityEstY();
+    double velocityTheta = kinematics_.getVelocityEstTheta();
 
-    float poseX = kinematics_.getXEstPose();
-    float poseY = kinematics_.getYEstPose();
-    float poseTheta = kinematics_.getThetaEstPose();
+    double poseX = kinematics_.getXEstPose();
+    double poseY = kinematics_.getYEstPose();
+    double poseTheta = kinematics_.getThetaEstPose();
 
     tf2::Quaternion odomQuaternion;
     odomQuaternion.setRPY(0, 0, poseTheta);
@@ -127,6 +129,7 @@ void RoverOdometry::publishCameraLink() {
     cameraLinkTransform_.transform.rotation.w = cameraQuat.w();
 
     cameraLinkBroadcaster_.sendTransform(cameraLinkTransform_);
+    ROS_INFO("Camera link set");
 }
 
 }  // namespace rover_odometry
