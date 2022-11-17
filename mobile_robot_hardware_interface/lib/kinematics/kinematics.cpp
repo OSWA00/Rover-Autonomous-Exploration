@@ -1,30 +1,28 @@
 #include "kinematics.h"
 
-float convert_omega_to_vel(float omega)
-{
-    float wheel_radio = 0.04;
+namespace kinematics {
+
+double convert_omega_to_vel(double omega) {
+    double wheel_radio = 0.04;
     return omega * wheel_radio;
 }
 
-float calculate_frontal_velocity(float vel_right, float vel_left)
-{
+double calculate_frontal_velocity(double vel_right, double vel_left) {
     return vel_right + vel_left / 2.0;
 }
 
-float calculate_frontal_omega(float vel_right, float vel_left)
-{
-    float robot_length = 0.1505;
+double calculate_frontal_omega(double vel_right, double vel_left) {
+    double robot_length = 0.1505;
     return (vel_left - vel_right) / (2.0 * robot_length);
 }
 
-float calculate_right_velocity(float velocity, float omega)
-{
-    float robot_length = 0.1505;
+double calculate_right_velocity(double velocity, double omega) {
+    double robot_length = 0.1505;
     return velocity + 0.5 * robot_length * omega;
 }
 
-float calculate_left_velocity(float velocity, float omega)
-{
-    float robot_length = 0.1505;
+double calculate_left_velocity(double velocity, double omega) {
+    double robot_length = 0.1505;
     return velocity - 0.5 * robot_length * omega;
 }
+}  // namespace kinematics

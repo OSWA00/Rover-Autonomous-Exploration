@@ -1,15 +1,13 @@
+#pragma once
+#include "Arduino.h"
 
-#ifndef ENCODER_H
-#define ENCODER_H
-
-struct Encoder
-{
+namespace encoder {
+struct Encoder {
     unsigned int channel_A_pin;
-    unsigned int pulses;
+    unsigned int pulses = 0x0;
 };
 
 void init_encoder(Encoder &encoder, unsigned int channel_A_pin);
 
-float calculate_omega(Encoder &encoder, float time_delta);
-
-#endif
+double calculate_omega(Encoder &encoder, double time_delta);
+}  // namespace encoder

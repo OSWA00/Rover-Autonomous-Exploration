@@ -1,0 +1,13 @@
+<launch>
+    <!-- Launch rover odometry node -->
+    <node pkg="rover_odometry" type="rover_odometry" name="rover_odometry" output="screen">
+        <rosparam command="load" file="$(find rover_odometry)/config/rover_odometry/topics.yaml" />
+        <rosparam command="load" file="$(find rover_odometry)/config/rover_odometry/rover_parameters.yaml" />
+        <rosparam command="load" file="$(find rover_odometry)/config/rover_odometry/frames.yaml" />
+
+    </node>
+
+    <!-- Launch roserial node -->
+    <node pkg="rosserial_python" name="rosserial_python" type="serial_node.py" />
+
+</launch>

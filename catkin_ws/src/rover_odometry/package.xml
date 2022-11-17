@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>rover_odometry</name>
+  <version>0.1.0</version>
+  <description>Converts rover sensors into tf odometry for navigation</description>
+
+  <maintainer email="oswaldohernandez@protonmail.com">Oswaldo Hernandez</maintainer>
+
+  <license>MIT</license>
+
+  <!-- buildtool_depend: dependencies of the build process -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roslint</build_depend>
+  <!-- build_depend: dependencies only used in source files -->
+
+  <!-- depend: build, export, and execution dependency -->
+  <depend>roscpp</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf</depend>
+  <depend>std_msgs</depend>
+
+</package>
