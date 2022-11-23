@@ -5,7 +5,7 @@
     <description>Navigation package for rover.</description>
     <maintainer email="oswaldohernandez@protonmail.com">oswaldohernandez</maintainer>
     <license>MIT</license>
-    <author email="pfankhauser@anybotics.com">Peter Fankhauser</author>
+    <author email="">alejandrobutterfield</author>
 
     <!-- buildtool_depend: dependencies of the build process -->
     <buildtool_depend>catkin</buildtool_depend>
