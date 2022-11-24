@@ -11,4 +11,6 @@
       <remap from="cmd_vel" to="rover/cmd_vel" />
    </node>
 
+   <!-- Launch RVIZ -->
+   <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rover_navigation)/rviz/rover_navigation.rviz" />
 </launch> 
