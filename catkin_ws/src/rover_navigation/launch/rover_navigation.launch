@@ -13,4 +13,8 @@
 
    <!-- Launch RVIZ -->
    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rover_navigation)/rviz/rover_navigation.rviz" />
+
+   <!-- Launch RVIZ -->
+   <node type="slam_gmapping" name="gmapping" pkg="gmapping" />
+
 </launch> 
