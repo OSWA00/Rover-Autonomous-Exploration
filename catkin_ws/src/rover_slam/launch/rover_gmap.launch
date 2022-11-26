@@ -2,8 +2,6 @@
 
 <launch>
 
-   <arg name="sensor_range" default="1.0" />
-
    <!-- Launch Gmapping -->
    <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
       <rosparam file="$(find rover_slam)/config/gmapping.yaml" command="load" />
