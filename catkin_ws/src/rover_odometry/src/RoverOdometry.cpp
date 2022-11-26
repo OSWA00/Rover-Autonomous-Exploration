@@ -86,7 +86,7 @@ void RoverOdometry::publishOdom() {
 
     odomTransform_.transform.translation.x = poseX;
     odomTransform_.transform.translation.y = poseY;
-    odomTransform_.transform.translation.z = 0.048;
+    odomTransform_.transform.translation.z = 0.0;
 
     odomTransform_.transform.rotation = odomMessage;
 
@@ -118,7 +118,7 @@ void RoverOdometry::publishCameraLink() {
 
     cameraLinkTransform_.transform.translation.x = -0.2002;
     cameraLinkTransform_.transform.translation.y = 0.0;
-    cameraLinkTransform_.transform.translation.z = 0.15178;
+    cameraLinkTransform_.transform.translation.z = 0.1758;
 
     tf2::Quaternion cameraQuat;
     cameraQuat.setRPY(0.0, 0.0, 0.0);
