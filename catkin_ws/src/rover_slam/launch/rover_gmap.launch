@@ -1,13 +1,24 @@
 <?xml version="1.0"?>
 
 <launch>
+
+  <arg name="sensor_range" default="1.0"/>
+  
  <!-- Launch Gmapping -->
    <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
       <rosparam file="$(find rover_slam)/config/gmapping.yaml" command="load" />
    </node>
 
 <!-- Launch AMCL -->
-   <include file="$(find rover_slam)/launch/amcl.launch">
-   </include>
+   <include file="$(find rover_slam)/launch/amcl.launch"/>
+
+<!-- Launch Frontier Exploration -->
+   <node pkg="frontier_exploration" type="explore_client" name="explore_client" output="screen"/>
+   <node pkg="frontier_exploration" type="explore_server" name="explore_server" output="screen" >
+      <param name="frequency" type="double" value="1.0"/>
+      <param name="goal_aliasing" type="double" value="$(arg sensor_range)"/>
+      <rosparam file="$(find rover_navigation)/config/costmap_common.yaml" command="load" ns="explore_costmap" />
+      <rosparam file="$(find rover_slam)/config/frontier_exploration.yaml" command="load" ns="explore_costmap" />
+   </node>
 
 </launch>
