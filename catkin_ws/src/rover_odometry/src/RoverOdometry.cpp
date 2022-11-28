@@ -2,7 +2,8 @@
 
 namespace rover_odometry {
 RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
-    : nodeHandle_(nodeHandle) {
+    : nodeHandle_(nodeHandle)
+{
     if (!readParameters()) {
         ROS_ERROR("Could not read parameters.");
         ros::requestShutdown();
@@ -22,7 +23,8 @@ RoverOdometry::RoverOdometry(ros::NodeHandle& nodeHandle)
 
 RoverOdometry::~RoverOdometry() {}
 
-bool RoverOdometry::readParameters() {
+bool RoverOdometry::readParameters()
+{
     if (!nodeHandle_.getParam("wl_topic", wlTopic_)) return false;
     if (!nodeHandle_.getParam("wr_topic", wrTopic_)) return false;
     if (!nodeHandle_.getParam("odom_topic", odomTopic_)) return false;
@@ -36,27 +38,30 @@ bool RoverOdometry::readParameters() {
     return true;
 }
 
-void RoverOdometry::wlCallback(const std_msgs::Float32& message) {
+void RoverOdometry::wlCallback(const std_msgs::Float32& message)
+{
     double angularVelocity = message.data;
     double filteredAngularVelocity =
-        leftWheelFilter_.filterWheelAngularVelocity(angularVelocity);
+            leftWheelFilter_.filterWheelAngularVelocity(angularVelocity);
     double velocity =
-        kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+            kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     ROS_DEBUG("Left wheel velocity: %f", velocity);
     kinematics_.setLeftWheelEstVel(velocity);
 }
 
-void RoverOdometry::wrCallback(const std_msgs::Float32& message) {
+void RoverOdometry::wrCallback(const std_msgs::Float32& message)
+{
     double angularVelocity = message.data;
     double filteredAngularVelocity =
-        rightWheelFilter_.filterWheelAngularVelocity(angularVelocity);
+            rightWheelFilter_.filterWheelAngularVelocity(angularVelocity);
     double velocity =
-        kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
+            kinematics_.estimateWheelLinearVelocity(filteredAngularVelocity);
     ROS_DEBUG("Right wheel velocity: %f", velocity);
     kinematics_.setRightWheelEstVel(velocity);
 }
 
-void RoverOdometry::publishOdom() {
+void RoverOdometry::publishOdom()
+{
     timeCurrent_ = ros::Time::now();
     double timeDelta = (timeCurrent_ - timeLast_).toSec();
     kinematics_.estimatePosition(timeDelta);
@@ -111,7 +116,8 @@ void RoverOdometry::publishOdom() {
     odom_.publish(odom);
 }
 
-void RoverOdometry::publishCameraLink() {
+void RoverOdometry::publishCameraLink()
+{
     cameraLinkTransform_.header.stamp = ros::Time::now();
     cameraLinkTransform_.header.frame_id = baseFrame_;
     cameraLinkTransform_.child_frame_id = cameraFrame_;
@@ -132,4 +138,4 @@ void RoverOdometry::publishCameraLink() {
     ROS_INFO("Camera link set");
 }
 
-}  // namespace rover_odometry
+}// namespace rover_odometry

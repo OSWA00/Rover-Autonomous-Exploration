@@ -4,13 +4,13 @@
 
 namespace rover_odometry {
 class FIRFilter {
-   private:
+private:
     Eigen::VectorXd filterCoefficients_;
     Eigen::VectorXd filterValues_;
 
-   public:
+public:
     FIRFilter();
     virtual ~FIRFilter();
-    double filterWheelAngularVelocity(const double &omega);
+    double filterWheelAngularVelocity(const double& omega);
 };
-}  // namespace rover_odometry
+}// namespace rover_odometry

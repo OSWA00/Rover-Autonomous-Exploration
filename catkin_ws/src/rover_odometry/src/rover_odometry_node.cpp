@@ -2,7 +2,8 @@
 
 #include "rover_odometry/RoverOdometry.hpp"
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     ros::init(argc, argv, "rover_odometry");
     ros::NodeHandle nodeHandle("~");
 
