@@ -7,7 +7,4 @@
       <rosparam file="$(find rover_slam)/config/gmapping.yaml" command="load" />
    </node>
 
-   <!-- Launch AMCL -->
-   <include file="$(find rover_slam)/launch/amcl.launch" />
-
 </launch>
