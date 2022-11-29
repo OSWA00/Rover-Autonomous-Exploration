@@ -1,0 +1,5 @@
+<launch>
+    <node type="explore" name="explore" pkg="explore_lite" respawn="true" output="screen"></node>
+
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(find rover_navigation)/rviz/rover_mapping.rviz" />
+</launch>

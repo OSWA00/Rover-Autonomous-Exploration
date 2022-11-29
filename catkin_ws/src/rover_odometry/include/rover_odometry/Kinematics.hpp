@@ -5,24 +5,24 @@
 namespace rover_odometry {
 
 class Kinematics {
-   public:
+public:
     Kinematics();
 
     virtual ~Kinematics();
 
-    void addRobotParameters(const double &wheelSeparation, const double &wheelRadius);
+    void addRobotParameters(const double& wheelSeparation, const double& wheelRadius);
 
-    double estimateWheelLinearVelocity(const double &omega);
+    double estimateWheelLinearVelocity(const double& omega);
 
     void estimateLinearVelocity();
 
     void estimateAngularVelocity();
 
-    void estimatePosition(const double &deltaTime);
+    void estimatePosition(const double& deltaTime);
 
-    void setRightWheelEstVel(const double &velocity);
+    void setRightWheelEstVel(const double& velocity);
 
-    void setLeftWheelEstVel(const double &velocity);
+    void setLeftWheelEstVel(const double& velocity);
 
     double getXEstPose();
 
@@ -36,7 +36,7 @@ class Kinematics {
 
     double getVelocityEstTheta();
 
-   private:
+private:
     struct RobotParameters;
 
     struct RobotOdometry;
@@ -45,4 +45,4 @@ class Kinematics {
 
     std::unique_ptr<RobotOdometry> robotOdometry_;
 };
-}  // namespace rover_odometry
+}// namespace rover_odometry

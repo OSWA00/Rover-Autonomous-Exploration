@@ -200,6 +200,7 @@ cython_debug/
 devel/
 logs/
 bin/
+install/
 msg_gen/
 srv_gen/
 msg/*Action.msg

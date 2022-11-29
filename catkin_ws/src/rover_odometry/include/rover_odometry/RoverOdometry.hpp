@@ -15,13 +15,13 @@
 
 namespace rover_odometry {
 class RoverOdometry {
-   public:
+public:
     RoverOdometry(ros::NodeHandle& nodeHandle);
     virtual ~RoverOdometry();
     void publishOdom();
     void publishCameraLink();
 
-   private:
+private:
     bool readParameters();
     void wlCallback(const std_msgs::Float32& message);
     void wrCallback(const std_msgs::Float32& message);
@@ -57,4 +57,4 @@ class RoverOdometry {
     FIRFilter leftWheelFilter_;
     FIRFilter rightWheelFilter_;
 };
-}  // namespace rover_odometry
+}// namespace rover_odometry

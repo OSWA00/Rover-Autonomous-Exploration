@@ -20,7 +20,8 @@ ros::Publisher WL("rover/wl", &WL_MSG);
 std_msgs::Float32 WR_MSG;
 ros::Publisher WR("rover/wr", &WR_MSG);
 
-ros::Subscriber<geometry_msgs::Twist> CMD_VEL("rover/cmd_vel", &cmd_vel_callback);
+ros::Subscriber<geometry_msgs::Twist> CMD_VEL("rover/cmd_vel",
+                                              &cmd_vel_callback);
 
 encoder::Encoder ENCODER_LEFT;
 encoder::Encoder ENCODER_RIGHT;
@@ -54,8 +55,10 @@ void setup() {
     velocity_controller::init_controller(CONTROLLER_RIGHT, 10, 0.01);
     velocity_controller::init_controller(CONTROLLER_LEFT, 10, 0.01);
 
-    attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT.channel_A_pin), encoder_right_isr_handler, RISING);
-    attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT.channel_A_pin), encoder_left_isr_handler, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_RIGHT.channel_A_pin),
+                    encoder_right_isr_handler, RISING);
+    attachInterrupt(digitalPinToInterrupt(ENCODER_LEFT.channel_A_pin),
+                    encoder_left_isr_handler, RISING);
 }
 
 void loop() {
@@ -69,8 +72,12 @@ void loop() {
     double omega_right = encoder::calculate_omega(ENCODER_RIGHT, TIME_DELTA);
     double velocity_right = kinematics::convert_omega_to_vel(omega_right);
 
-    double u_right = velocity_controller::calculate_u(CONTROLLER_RIGHT, velocity_right, CONTROLLER_RIGHT.velocity_reference, TIME_DELTA);
-    double u_left = velocity_controller::calculate_u(CONTROLLER_LEFT, velocity_left, CONTROLLER_LEFT.velocity_reference, TIME_DELTA);
+    double u_right = velocity_controller::calculate_u(
+        CONTROLLER_RIGHT, velocity_right, CONTROLLER_RIGHT.velocity_reference,
+        TIME_DELTA);
+    double u_left = velocity_controller::calculate_u(
+        CONTROLLER_LEFT, velocity_left, CONTROLLER_LEFT.velocity_reference,
+        TIME_DELTA);
 
     WL_MSG.data = omega_left;
     WL.publish(&WL_MSG);
@@ -85,17 +92,15 @@ void loop() {
     delay(5);
 }
 
-void encoder_right_isr_handler() {
-    ENCODER_RIGHT.pulses++;
-}
+void encoder_right_isr_handler() { ENCODER_RIGHT.pulses++; }
 
-void encoder_left_isr_handler() {
-    ENCODER_LEFT.pulses++;
-}
+void encoder_left_isr_handler() { ENCODER_LEFT.pulses++; }
 
 void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel) {
     double velocity_linear_x = cmd_vel.linear.x;
     double velocity_angular_z = cmd_vel.angular.z;
-    CONTROLLER_RIGHT.velocity_reference = kinematics::calculate_right_velocity(velocity_linear_x, velocity_angular_z);
-    CONTROLLER_LEFT.velocity_reference = kinematics::calculate_left_velocity(velocity_linear_x, velocity_angular_z);
+    CONTROLLER_RIGHT.velocity_reference = kinematics::calculate_right_velocity(
+        velocity_linear_x, velocity_angular_z);
+    CONTROLLER_LEFT.velocity_reference = kinematics::calculate_left_velocity(
+        velocity_linear_x, velocity_angular_z);
 }
