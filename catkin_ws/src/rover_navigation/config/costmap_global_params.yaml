@@ -22,4 +22,4 @@ global_costmap:
   # Whether or not to use the static map to initialize the costmap.
   # If the rolling_window parameter is set to true, this parameter must be set to false.
   static_map: false
-  rolling_window: false
+  rolling_window: true
