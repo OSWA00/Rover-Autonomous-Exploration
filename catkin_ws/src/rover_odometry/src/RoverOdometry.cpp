@@ -123,7 +123,7 @@ void RoverOdometry::publishCameraLink()
     cameraLinkTransform_.child_frame_id = cameraFrame_;
 
     cameraLinkTransform_.transform.translation.x = -0.2002;
-    cameraLinkTransform_.transform.translation.y = 0.0;
+    cameraLinkTransform_.transform.translation.y = 0.04;
     cameraLinkTransform_.transform.translation.z = 0.1758;
 
     tf2::Quaternion cameraQuat;
