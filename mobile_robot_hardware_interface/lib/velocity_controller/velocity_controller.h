@@ -8,10 +8,10 @@ struct ControllerParameters {
     double velocity_reference = 0.0;
 };
 
-void init_controller(ControllerParameters &controller, double gain_proportional,
+void init_controller(ControllerParameters& controller, double gain_proportional,
                      double gain_integral);
 
-double calculate_u(ControllerParameters &controller, double current_velocity,
+double calculate_u(ControllerParameters& controller, double current_velocity,
                    double desired_velocity, double time_delta);
 
-} // namespace velocity_controller
+}// namespace velocity_controller

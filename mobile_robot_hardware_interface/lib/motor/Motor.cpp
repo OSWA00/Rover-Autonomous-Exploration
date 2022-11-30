@@ -1,6 +1,7 @@
 #include "Motor.h"
 namespace motor {
-void init_motor(Motor &motor, int enable_pin, int enable_pwm_channel) {
+void init_motor(Motor& motor, int enable_pin, int enable_pwm_channel)
+{
     int pwm_frequency = 0x3E8;
     int pwm_resolution = 0x8;
 
@@ -15,8 +16,9 @@ void init_motor(Motor &motor, int enable_pin, int enable_pwm_channel) {
     digitalWrite(motor.enable_pin, LOW);
 }
 
-void send_pwm(Motor &motor, double u) {
+void send_pwm(Motor& motor, double u)
+{
     int duty_cycle = -u * 255;
     ledcWrite(motor.enable_pwm_channel, duty_cycle);
 }
-}  // namespace motor
+}// namespace motor
