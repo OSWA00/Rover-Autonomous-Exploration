@@ -1,14 +1,16 @@
 #include "velocity_controller.h"
 
 namespace velocity_controller {
-void init_controller(ControllerParameters &controller, double gain_proportional,
-                     double gain_integral) {
+void init_controller(ControllerParameters& controller, double gain_proportional,
+                     double gain_integral)
+{
     controller.gain_proportional = gain_proportional;
     controller.gain_integral = gain_integral;
 }
 
-double calculate_u(ControllerParameters &controller, double current_velocity,
-                   double desired_velocity, double time_delta) {
+double calculate_u(ControllerParameters& controller, double current_velocity,
+                   double desired_velocity, double time_delta)
+{
     double error = current_velocity - desired_velocity;
 
     controller.integral_error += error * time_delta;
@@ -28,4 +30,4 @@ double calculate_u(ControllerParameters &controller, double current_velocity,
     return u;
 }
 
-} // namespace velocity_controller
+}// namespace velocity_controller

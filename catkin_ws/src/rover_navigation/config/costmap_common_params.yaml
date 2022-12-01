@@ -14,7 +14,7 @@ footprint: [[0.18, 0.15], [-0.24, 0.15], [-0.24, -0.15], [0.18, -0.15]]
 # robot_radius: 0.25
 
 # The radius in meters to which the map inflates obstacle cost values.
-inflation_radius: 0.15
+inflation_radius: 0.05
 # A scaling factor to apply to cost values during inflation. 
 # The cost function is computed as follows for all cells in the costmap further than the inscribed radius distance and 
 # closer than the inflation radius distance away from an actual obstacle: 

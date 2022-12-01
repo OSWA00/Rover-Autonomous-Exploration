@@ -10,7 +10,7 @@
 
 void encoder_right_isr_handler();
 void encoder_left_isr_handler();
-void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel);
+void cmd_vel_callback(const geometry_msgs::Twist& cmd_vel);
 
 ros::NodeHandle NODE_HANDLE;
 
@@ -36,7 +36,8 @@ double TIME_CURRENT;
 double TIME_DELTA;
 double TIME_LAST;
 
-void setup() {
+void setup()
+{
     NODE_HANDLE.initNode();
 
     NODE_HANDLE.advertise(WL);
@@ -61,7 +62,8 @@ void setup() {
                     encoder_left_isr_handler, RISING);
 }
 
-void loop() {
+void loop()
+{
     TIME_CURRENT = micros();
     TIME_DELTA = (TIME_CURRENT - TIME_LAST) / 1000000;
     TIME_LAST = TIME_CURRENT;
@@ -73,11 +75,11 @@ void loop() {
     double velocity_right = kinematics::convert_omega_to_vel(omega_right);
 
     double u_right = velocity_controller::calculate_u(
-        CONTROLLER_RIGHT, velocity_right, CONTROLLER_RIGHT.velocity_reference,
-        TIME_DELTA);
+            CONTROLLER_RIGHT, velocity_right, CONTROLLER_RIGHT.velocity_reference,
+            TIME_DELTA);
     double u_left = velocity_controller::calculate_u(
-        CONTROLLER_LEFT, velocity_left, CONTROLLER_LEFT.velocity_reference,
-        TIME_DELTA);
+            CONTROLLER_LEFT, velocity_left, CONTROLLER_LEFT.velocity_reference,
+            TIME_DELTA);
 
     WL_MSG.data = omega_left;
     WL.publish(&WL_MSG);
@@ -96,11 +98,12 @@ void encoder_right_isr_handler() { ENCODER_RIGHT.pulses++; }
 
 void encoder_left_isr_handler() { ENCODER_LEFT.pulses++; }
 
-void cmd_vel_callback(const geometry_msgs::Twist &cmd_vel) {
+void cmd_vel_callback(const geometry_msgs::Twist& cmd_vel)
+{
     double velocity_linear_x = cmd_vel.linear.x;
     double velocity_angular_z = cmd_vel.angular.z;
     CONTROLLER_RIGHT.velocity_reference = kinematics::calculate_right_velocity(
-        velocity_linear_x, velocity_angular_z);
+            velocity_linear_x, velocity_angular_z);
     CONTROLLER_LEFT.velocity_reference = kinematics::calculate_left_velocity(
-        velocity_linear_x, velocity_angular_z);
+            velocity_linear_x, velocity_angular_z);
 }
