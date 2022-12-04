@@ -1,58 +1,47 @@
-# Mobile Robot SLAM #
+# Rover Autonomous Exploration & Mapping #
 
-## Remote connection ##
+![rover](documentation/images/robot.jpeg)
 
-```bash:
-export ROS_MASTER_URI=http//192.168.4.10:11311/
+Autonomous exploration using ROS navigation stack, gmapping, frontier exploring, Intel Euclid & custom hardware.
+
+## Requirements ##
+
+- Intel Euclid with ROS Kinetic
+- ESP32 Devkit V1
+- PC with ROS Noetic
+
+## How to use the project ##
+
+Use the catkin_ws as the ros workspace.
+
+``` bash
+cd catkin_ws && catkin build
 ```
 
-```bash:
-export ROS_IP=<computer ip>
+Upload the */hardware_interface* into the ESP32 through Platformio.
+
+Launch files Intel Euclid
+
+``` bash
+roslaunch rover_odometry rover_odometry
+
+roslaunch depthimage_to_laserscan launchfile_sample.launch
 ```
 
-## Build workspace ##
+Launch files External PC
 
-```bash:
-cd /catkin_ws
-catkin_make
+```
+roslaunch rover_slam rover_gmap.launch
+
+roslaunch rover_navigation rover_navigation
+
+roslaunch rover_navigation rover_exploration.launch
 ```
 
-## Enable environment ##
+## Results ##
 
-```bash:
-source devel/setup.bash
-```
+![Autonomous navigation](documentation/images/move_base.png)
+Autonomous navigation using the ros navigation stack.
 
-## ROS commands ##
-
-### Enable RGBD camera ###
-
-```bash:
-roslaunch realsense_camera r200_nodelet_rgbd.launch
-```
-
-### See image through image viewer ###
-
-#### RGB ####
-
-```bash:
-rosrun image_view image_view image:=/camera/rgb/image_raw
-```
-
-#### Depth ####
-
-```bash:
-rosrun image_view image_view image:=/camera/depth/image_rect_raw
-```
-
-### Enable serial communication to hardware interface ###
-
-```bash:
-rosrun rosserial_python serial_node.py
-```
-
-### Enable teleop_twist_keyboard ###
-
-```bash:
-rosrun teleop_twist_keyboard teleop_twist_keyboard.py
-```
+![rover](documentation/images/frontier_exploration.png)
+Autonomous frontier exploration.
